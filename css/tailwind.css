@@ -1,0 +1,336 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/forms";
+@plugin '@tailwindcss/typography';
+@source '../node_modules/pliny';
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   设计系统 · 暖纸质手账
+   底色：米白 / 墨黑；强调：陶土红；分割：极细米线
+   ============================================================ */
+@theme {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', ui-sans-serif, sans-serif;
+  --font-serif:
+    'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', Georgia, 'Times New Roman',
+    serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* 纸与墨 */
+  --color-paper: #f6f3ed;
+  --color-surface: #fffdf8;
+  --color-ink: #1c1a17;
+  --color-ink-2: #6d6559;
+  --color-ink-3: #a2988a;
+  --color-line: #e2dbce;
+
+  /* 陶土（主强调） */
+  --color-clay-50: #faf0eb;
+  --color-clay-100: #f2dcd2;
+  --color-clay-200: #e5bba8;
+  --color-clay-300: #d69578;
+  --color-clay-400: #c5714f;
+  --color-clay-500: #b3563a;
+  --color-clay-600: #95452e;
+  --color-clay-700: #763625;
+  --color-clay-800: #57281c;
+  --color-clay-900: #3b1b13;
+
+  /* 苔绿（次强调，用于心情/标签） */
+  --color-moss-300: #93a89a;
+  --color-moss-500: #4c6b58;
+  --color-moss-700: #2f463a;
+
+  /* 兼容基座里的 primary-* 用法 */
+  --color-primary-50: #faf0eb;
+  --color-primary-100: #f2dcd2;
+  --color-primary-200: #e5bba8;
+  --color-primary-300: #d69578;
+  --color-primary-400: #c5714f;
+  --color-primary-500: #b3563a;
+  --color-primary-600: #95452e;
+  --color-primary-700: #763625;
+  --color-primary-800: #57281c;
+  --color-primary-900: #3b1b13;
+  --color-primary-950: #2a130d;
+
+  --line-height-11: 2.75rem;
+  --line-height-12: 3rem;
+  --line-height-13: 3.25rem;
+  --line-height-14: 3.5rem;
+
+  --z-60: 60;
+  --z-70: 70;
+  --z-80: 80;
+
+  --radius-card: 4px;
+}
+
+/* 暗色：墨纸 */
+html.dark {
+  --color-paper: #100f0e;
+  --color-surface: #191715;
+  --color-ink: #eae5dc;
+  --color-ink-2: #a49a8b;
+  --color-ink-3: #6d655a;
+  --color-line: #2a2724;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: transparent;
+    color: var(--color-ink);
+    font-feature-settings:
+      'tnum' on,
+      'kern' on;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-clay-500) 20%, transparent);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: 0.01em;
+  }
+
+  /* 细颗粒纸纹 */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  html.dark body::after {
+    opacity: 0.05;
+    mix-blend-mode: screen;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-3);
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-line, currentColor);
+  }
+
+  a,
+  button {
+    outline-color: var(--color-clay-500);
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid;
+    outline-offset: 3px;
+    border-radius: 2px;
+    outline-color: var(--color-clay-500);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .hairline {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  /* 下划线生长 */
+  .ul-grow {
+    position: relative;
+  }
+  .ul-grow::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1px;
+    width: 0;
+    background: var(--color-clay-500);
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ul-grow:hover::after,
+  .ul-grow[data-active='true']::after {
+    width: 100%;
+  }
+
+  /* 入场：逐行上浮 */
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .prose {
+    & a {
+      color: var(--color-clay-500);
+      text-underline-offset: 3px;
+      &:hover {
+        color: var(--color-clay-600);
+      }
+      & code {
+        color: var(--color-clay-500);
+      }
+    }
+    & :where(h1, h2) {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+    & h3 {
+      font-family: var(--font-serif);
+      font-weight: 500;
+    }
+    & :where(code):not(pre code) {
+      color: var(--color-clay-600);
+    }
+  }
+
+  .prose-invert {
+    & a {
+      color: var(--color-clay-400);
+      &:hover {
+        color: var(--color-clay-300);
+      }
+      & code {
+        color: var(--color-clay-400);
+      }
+    }
+    & :where(h1, h2, h3, h4, h5, h6) {
+      color: var(--color-ink);
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.task-list-item::before {
+  @apply hidden;
+}
+.task-list-item {
+  @apply list-none;
+}
+.footnotes {
+  @apply mt-12 border-t pt-8;
+  border-color: var(--color-line);
+}
+.data-footnote-backref {
+  @apply no-underline;
+}
+.csl-entry {
+  @apply my-5;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
+}
+.katex-display {
+  overflow: auto hidden;
+}
+.content-header-link {
+  opacity: 0;
+  margin-left: -24px;
+  padding-right: 4px;
+}
+.content-header:hover .content-header-link,
+.content-header-link:hover {
+  opacity: 1;
+}
+.linkicon {
+  display: inline-block;
+  vertical-align: middle;
+}

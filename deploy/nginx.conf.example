@@ -1,0 +1,42 @@
+# 拾光 · Nginx 反向代理示例
+# 放到 /etc/nginx/sites-available/shiguang，软链到 sites-enabled，
+# 把 your-domain.com 换成自己的域名，然后 nginx -t && systemctl reload nginx
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name your-domain.com www.your-domain.com;
+
+    # 客户端上传大图时放宽一点
+    client_max_body_size 25m;
+
+    # Next 的静态产物带 hash，可以长缓存
+    location /_next/static/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_cache_valid 200 365d;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # 照片等静态资源，30 天
+    location /photos/ {
+        proxy_pass http://127.0.0.1:3000;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 60s;
+    }
+
+    gzip on;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+}

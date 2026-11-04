@@ -1,0 +1,63 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+/.yarn/*
+!/.yarn/releases
+!/.yarn/plugins
+!/.yarn/sdks
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+public/sitemap.xml
+.vercel
+
+# production
+/build
+*.xml
+
+# rss feed
+/public/feed.xml
+
+# search
+/public/search.json
+
+# misc
+.DS_Store
+
+# debug
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Contentlayer
+.contentlayer
+
+# 本机多套构建目录（沙箱不便清理 .next 时用）
+/.next-dev*/
+/.next-prod*/
+/.next-build/
+
+# 本地截图与测试页
+/shot-*.png
+/public/font-test.html
+
+# 部署日志
+/logs/
+
+# 示例内容归档（不进 git，可随时整个删掉）
+/_sample-content/
+
