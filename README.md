@@ -20,27 +20,31 @@ npm run serve    # 预览生产构建 http://localhost:3000
 npm run preview  # build + serve 一条命令搞定，发布前用这个走一遍
 ```
 
-## 工作台（日常运维用）
+## 工作台（日常运维用，纯前端操作）
+
+工作台是**独立服务**，和网站互不依赖：
 
 ```bash
-npm run studio      # 等同 npm run dev
+npm run studio
 ```
 
-然后打开 **http://localhost:3000/studio**（不要用 127.0.0.1 之外的地址）。
-
-四个面板：
+打开 **http://localhost:4000** 。左边六个面板：
 
 | 面板 | 能做什么 |
 |---|---|
 | 概览 | 日记/照片/书/行程/地点统计，最近 6 条 |
 | 写日记 | 表单化 front-matter + Markdown 编辑 + 实时预览，可存草稿 |
 | 照片 | 拖拽上传，自动压到长边 1600 / 质量 82，顺手填说明和地点 |
+| 书架 | 表格增删改：书名、作者、在读/读完/想读、进度或评分、批注 |
+| 行程 | 选城市 + 日期 + 一句话，城市从坐标表里选，不用手打经纬度 |
 | 发布 | 列出待提交文件 → 一键 commit + push → Vercel 自动构建 |
+
+**右上角是网站开关**：`启动网站` 会在 3000 端口拉起 `next dev`，`停止网站` 关掉它。
+如果 3000 被别的进程占了，按钮会变成「强制结束占用」，点一下就能清掉。
 
 **安全边界**
 
-- `middleware.ts` 把 `/studio` 和 `/api/studio/*` 限制为本机与局域网 IP，线上访问一律 404
-- API 层还有一道闸：`process.env.VERCEL` 存在时直接 403；用 `next start` 本地预览需显式设 `STUDIO_ALLOW=1`
+- 只监听 `127.0.0.1:4000`，局域网也连不上，线上更不可能
 - 只能写 `data/life/`、`site-data/`、`public/photos/` 三个目录，其它路径直接拒绝
 - 每次覆盖前把原文件快照到 `.studio-backup/<时间戳>/`（已 gitignore），没提交也能找回
 - 发布前会先 `git pull --rebase --autostash`，有冲突就停下来，不会强推

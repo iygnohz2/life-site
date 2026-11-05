@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>工作台 · DreamLand</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside>
+        <div class="brand">iygnohz&rsquo;s DreamLand<span>STUDIO</span></div>
+
+        <nav id="nav">
+          <button data-tab="overview" class="active">概览<small>OVERVIEW</small></button>
+          <button data-tab="write">写日记<small>WRITE</small></button>
+          <button data-tab="photos">照片<small>PHOTOS</small></button>
+          <button data-tab="books">书架<small>BOOKS</small></button>
+          <button data-tab="places">行程<small>PLACES</small></button>
+          <button data-tab="publish">发布<small>PUBLISH</small></button>
+        </nav>
+
+        <div class="foot">
+          独立工作台 · 仅本机访问<br />
+          <span id="site-link-wrap"></span>
+        </div>
+      </aside>
+
+      <main>
+        <div class="topbar">
+          <div class="status">
+            <span class="dot" id="site-dot"></span>
+            <span id="site-text">网站状态读取中…</span>
+          </div>
+          <button class="btn ghost" id="site-open" style="display: none">打开网站</button>
+          <button class="btn" id="site-toggle">启动网站</button>
+        </div>
+
+        <!-- 概览 -->
+        <section class="panel active" id="panel-overview">
+          <p class="eyebrow">OVERVIEW</p>
+          <h1>概览</h1>
+          <div class="stats" id="stats"></div>
+          <h2 class="section-title">最近改过</h2>
+          <div class="list" id="recent"></div>
+        </section>
+
+        <!-- 写日记 -->
+        <section class="panel" id="panel-write">
+          <p class="eyebrow">WRITE</p>
+          <h1>写日记</h1>
+
+          <div class="form">
+            <div class="field wide">
+              <label class="cap">选一篇来改</label>
+              <select id="post-picker"><option value="">＋ 新建</option></select>
+            </div>
+            <div class="field wide">
+              <label class="cap">标题</label>
+              <input id="f-title" placeholder="今天发生了什么" />
+            </div>
+            <div class="field">
+              <label class="cap">日期</label>
+              <input id="f-date" type="date" />
+            </div>
+            <div class="field">
+              <label class="cap">地点</label>
+              <input id="f-place" placeholder="苏州 · 平江路" />
+            </div>
+            <div class="field">
+              <label class="cap">心情</label>
+              <select id="f-mood">
+                <option value="">（不填）</option>
+                <option>平静</option><option>愉快</option><option>低落</option>
+                <option>疲惫</option><option>兴奋</option><option>恍惚</option><option>思念</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="cap">天气</label>
+              <select id="f-weather">
+                <option value="">（不填）</option>
+                <option>晴</option><option>多云</option><option>阴</option>
+                <option>雨</option><option>雪</option><option>雾</option><option>风</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="cap">标签（逗号分隔）</label>
+              <input id="f-tags" placeholder="日常, 吃" />
+            </div>
+            <div class="field">
+              <label class="cap">摘要</label>
+              <input id="f-summary" placeholder="一句话" />
+            </div>
+          </div>
+
+          <div class="editor">
+            <div class="field">
+              <label class="cap">正文（Markdown）</label>
+              <textarea id="f-body" rows="16" placeholder="支持 # 标题、&gt; 引用、- 列表、**粗体**"></textarea>
+            </div>
+            <div class="field">
+              <label class="cap">预览</label>
+              <div class="preview" id="preview"><span style="color: var(--ink-3)">预览会显示在这里</span></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="save">保存</button>
+            <button class="btn" id="save-draft">存为草稿</button>
+            <span class="hint" id="write-hint"></span>
+          </div>
+        </section>
+
+        <!-- 照片 -->
+        <section class="panel" id="panel-photos">
+          <p class="eyebrow">PHOTOS</p>
+          <h1>照片</h1>
+
+          <div class="drop" id="drop">
+            <p id="drop-text">把照片拖到这里，或点击选择</p>
+            <small>自动压到长边 1600 / 质量 82 · 文件名请用 2026-11-05-短名.jpg</small>
+            <input type="file" id="file" accept="image/*" multiple hidden />
+          </div>
+          <div class="list" id="upload-log"></div>
+
+          <h2 class="section-title" id="photo-count">已有照片</h2>
+          <div class="gallery" id="gallery"></div>
+        </section>
+
+        <!-- 书架 -->
+        <section class="panel" id="panel-books">
+          <p class="eyebrow">BOOKS</p>
+          <h1>书架</h1>
+          <p class="sub">「在读」填进度，「读完」填评分，批注会显示在书脊的详情里。</p>
+
+          <div class="tbl" id="books-table"></div>
+
+          <div class="actions">
+            <button class="btn" id="book-add">＋ 添加一本</button>
+            <button class="btn primary" id="book-save">保存书架</button>
+            <span class="hint" id="book-hint"></span>
+          </div>
+        </section>
+
+        <!-- 行程 -->
+        <section class="panel" id="panel-places">
+          <p class="eyebrow">PLACES</p>
+          <h1>行程</h1>
+          <p class="sub">这里每条都会出现在「足迹」页；日记里填了地点也会自动进去，两者会合并。</p>
+
+          <div class="tbl" id="trips-table"></div>
+
+          <div class="actions">
+            <button class="btn" id="trip-add">＋ 添加一段</button>
+            <button class="btn primary" id="trip-save">保存行程</button>
+            <span class="hint" id="trip-hint"></span>
+          </div>
+        </section>
+
+        <!-- 发布 -->
+        <section class="panel" id="panel-publish">
+          <p class="eyebrow">PUBLISH</p>
+          <h1>发布</h1>
+          <p style="color: var(--ink-2); font-size: 12.5px; line-height: 2; margin-top: 16px">
+            发布 = 提交改动并推到 GitHub，Vercel 自动重新构建，约 1–2 分钟上线。
+          </p>
+
+          <div class="files" id="files"></div>
+
+          <div class="actions">
+            <input id="commit-msg" placeholder="提交说明（可留空）" style="max-width: 320px" />
+            <button class="btn primary" id="publish">发布</button>
+            <button class="btn ghost" id="refresh-git">刷新</button>
+          </div>
+          <div class="hint" id="publish-hint"></div>
+
+          <h2 class="section-title">服务日志</h2>
+          <div class="log" id="site-log"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
