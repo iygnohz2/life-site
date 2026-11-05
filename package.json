@@ -12,7 +12,8 @@
     "serve": "next start",
     "preview": "npm run build && next start",
     "analyze": "cross-env ANALYZE=true next build",
-    "lint": "next lint --fix --dir app --dir components --dir lib --dir layouts --dir scripts"
+    "lint": "next lint --fix --dir app --dir components --dir lib --dir layouts --dir scripts",
+    "studio": "next dev"
   },
   "dependencies": {
     "@fontsource/noto-serif-sc": "^5.3.1",
@@ -68,6 +69,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3"
   },
   "lint-staged": {
