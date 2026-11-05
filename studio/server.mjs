@@ -356,6 +356,32 @@ const errorText = (e) => {
   return e instanceof Error ? e.message : String(e)
 }
 
+// 判断是否“连不上 GitHub”这类网络错误（区别于真正的代码冲突 / 权限问题）
+const NETWORK_ERROR_RE =
+  /(unable to access|Connection was reset|Connection reset|Recv failure|tunnel failed|schannel|close_notify|Could not resolve host|Failed to connect|timed out|timeout|Operation timed out|early EOF|RPC failed|502 Bad Gateway|Empty reply)/i
+
+function isNetworkError(e) {
+  return NETWORK_ERROR_RE.test(errorText(e))
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// 网络抖动很常见（尤其国内访问 GitHub），对 pull / push 各自自动重试 3 次
+async function gitWithRetry(args, tries = 3) {
+  let lastErr
+  for (let i = 0; i < tries; i++) {
+    try {
+      await run('git', args, { cwd: ROOT })
+      return
+    } catch (e) {
+      lastErr = e
+      if (!isNetworkError(e)) throw e // 真冲突 / 权限问题，不重试
+      if (i < tries - 1) await sleep(1200 * (i + 1))
+    }
+  }
+  throw lastErr
+}
+
 async function publish(message) {
   const status = await gitStatus()
   if (!status.files.length && !status.ahead) {
@@ -370,13 +396,23 @@ async function publish(message) {
     throw new Error(`提交失败：${errorText(e)}`)
   }
   try {
-    await run('git', ['pull', '--rebase', '--autostash'], { cwd: ROOT })
+    await gitWithRetry(['pull', '--rebase', '--autostash'])
   } catch (e) {
-    throw new Error(`拉取远端失败（可能有冲突，请手动处理）：${errorText(e)}`)
+    if (isNetworkError(e)) {
+      throw new Error(
+        `连不上 GitHub（网络被重置或超时），改动已安全保存在本机、不会丢失。\n请稍后重试“发布”，或换网络 / 挂代理后再试。\n\n原始信息：${errorText(e)}`
+      )
+    }
+    throw new Error(`拉取远端失败（代码有冲突，请手动处理）：${errorText(e)}`)
   }
   try {
-    await run('git', ['push'], { cwd: ROOT })
+    await gitWithRetry(['push'])
   } catch (e) {
+    if (isNetworkError(e)) {
+      throw new Error(
+        `推送失败：连不上 GitHub（网络被重置或超时）。改动已保存在本机，请稍后重试“发布”。\n\n原始信息：${errorText(e)}`
+      )
+    }
     throw new Error(`推送失败：${errorText(e)}`)
   }
   return { message: '已发布，Vercel 会自动开始构建', files: status.files, pushed: true }
