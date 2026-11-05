@@ -64,7 +64,7 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
         <div className="sm:flex sm:items-stretch sm:justify-between sm:gap-14">
           {/* 右栏：桌面端标题竖排，同句重影压在身后 */}
           <div className="relative sm:order-2 sm:shrink-0">
-            <h1 className="develop relative z-10 font-light tracking-[0.12em] text-[clamp(2rem,5vw,3.2rem)] [writing-mode:horizontal-tb] sm:text-[1.6rem] sm:leading-[1.65] sm:tracking-[0.18em] sm:[writing-mode:vertical-rl]">
+            <h1 className="develop relative z-10 text-[clamp(2rem,5vw,3.2rem)] font-light tracking-[0.12em] [writing-mode:horizontal-tb] sm:text-[1.6rem] sm:leading-[1.65] sm:tracking-[0.18em] sm:[writing-mode:vertical-rl]">
               把日子过成
               <br className="sm:hidden" />
               <span className="text-dream-300">值得记下</span>的样子
@@ -72,7 +72,7 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
 
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 hidden translate-x-[5px] -translate-y-[4px] font-serif text-[1.6rem] leading-[1.65] tracking-[0.18em] text-dream-200/[0.16] select-none [writing-mode:vertical-rl] sm:block"
+              className="text-dream-200/[0.16] pointer-events-none absolute inset-0 hidden translate-x-[5px] -translate-y-[4px] font-serif text-[1.6rem] leading-[1.65] tracking-[0.18em] select-none [writing-mode:vertical-rl] sm:block"
             >
               把日子过成值得记下的样子
             </span>

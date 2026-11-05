@@ -58,12 +58,14 @@
     "**/*.tsx",
     ".contentlayer/generated",
     ".contentlayer/generated/**/*.json",
+    ".next-b2/types/**/*.ts",
+    ".next-b3/types/**/*.ts",
     ".next-build/types/**/*.ts",
     ".next-dev/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    ".next-b2/types/**/*.ts"
+    ".next-b4/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

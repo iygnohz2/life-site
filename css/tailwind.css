@@ -25,22 +25,22 @@
   --color-ink-3: #7e8792;
   --color-line: #1e242c;
 
-  /* 月光蓝（主强调，全站用得极少） */
+  /* 月光蓝（主强调，全站用得极少）—— 默认按暗底取值 */
   --color-dream-50: #eef2f9;
   --color-dream-100: #dde5f2;
   --color-dream-200: #c8d6ec;
-  --color-dream-300: #a3b7d8;
-  --color-dream-400: #8ca3c9;
-  --color-dream-500: #7289b3;
-  --color-dream-600: #5a6e96;
+  --color-dream-300: #cfdcef;
+  --color-dream-400: #b6c7e2;
+  --color-dream-500: #9db0d2;
+  --color-dream-600: #8498bd;
   --color-dream-700: #455573;
   --color-dream-800: #2f3b52;
   --color-dream-900: #1c2434;
 
   /* 渗青（次强调） */
-  --color-mist-300: #a8c2bc;
-  --color-mist-500: #7fa098;
-  --color-mist-700: #5a7a73;
+  --color-mist-300: #b2cdc7;
+  --color-mist-500: #8fb0a8;
+  --color-mist-700: #6b8c85;
 
   --color-primary-50: #eef2f9;
   --color-primary-100: #dde5f2;
@@ -66,36 +66,34 @@
   --radius-card: 2px;
 }
 
-/* 浅色 = 显影过度：乳白灰，像晒白了的照片 */
-html:not(.dark) {
+/* 浅色 = 显影过度：乳白灰，像晒白了的照片。
+   只在 html.light 下生效 —— 没有类时一律按暗色渲染，避免首屏闪白。 */
+html.light {
   --color-paper: #ededef;
   --color-surface: #f7f7f8;
   --color-ink: #171a20;
   --color-ink-2: #4e545e;
   --color-ink-3: #7f858e;
   --color-line: #dcdde1;
+
+  --color-dream-300: #7f96bd;
+  --color-dream-400: #6d84ad;
+  --color-dream-500: #5d739c;
+  --color-dream-600: #4a5c80;
+  --color-mist-300: #7fa098;
+  --color-mist-500: #5f8079;
+  --color-mist-700: #4a6a63;
 }
 
-/* 暗色 = 暮色：暗底上把月光蓝提亮 */
-html.dark {
-  --color-dream-300: #cfdcef;
-  --color-dream-400: #b6c7e2;
-  --color-dream-500: #9db0d2;
-  --color-dream-600: #8498bd;
-  --color-mist-300: #b2cdc7;
-  --color-mist-500: #8fb0a8;
-  --color-mist-700: #6b8c85;
-}
-
-/* 天光：从上方漏下来的一点冷光，越往下越暗 */
+/* 天光：从上方漏下来的一点冷光，越往下越暗（默认按暗底取值） */
 :root {
-  --sky: rgba(140, 163, 201, 0.1);
-  --sky-hi: rgba(200, 214, 236, 0.14);
-}
-
-html.dark {
   --sky: rgba(120, 145, 190, 0.12);
   --sky-hi: rgba(180, 200, 232, 0.1);
+}
+
+html.light {
+  --sky: rgba(140, 163, 201, 0.1);
+  --sky-hi: rgba(200, 214, 236, 0.14);
 }
 
 @layer base {
