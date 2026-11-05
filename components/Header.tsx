@@ -37,7 +37,7 @@ const Header = () => {
           aria-label={siteMetadata.headerTitle}
           className="group flex items-baseline gap-3"
         >
-          <span className="font-serif text-[19px] leading-none tracking-[0.18em]">
+          <span className="font-serif text-[18px] leading-none font-light tracking-[0.08em]">
             {siteMetadata.headerTitle}
           </span>
           {siteMetadata.headerSubtitle ? (

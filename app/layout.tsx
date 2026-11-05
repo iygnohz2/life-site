@@ -65,8 +65,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         href={`${basePath}/static/favicons/favicon-16x16.png`}
       />
       <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f2f9" />
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#080a12" />
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ededef" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1116" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
       <body className="text-ink font-sans antialiased">
         <ThemeProviders>
