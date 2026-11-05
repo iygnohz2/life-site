@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 const facts = [
   { label: '现在', value: '在苏州生活和工作' },
-  { label: '喜欢', value: '走路、拍照、把普通的一天记下来' },
-  { label: '不擅长', value: '坚持写日记 —— 所以有了这个站点' },
+  { label: '喜欢', value: '天马行空、胡言乱语' },
+  { label: '不擅长', value: '表达、说话' },
 ]
 
 export default function AboutPage() {
@@ -31,10 +31,6 @@ export default function AboutPage() {
       </div>
 
       <div className="prose prose-neutral dark:prose-invert mt-10 max-w-2xl leading-[2]">
-        <p>
-          这个站点是手写的，没有后台，没有算法推荐。每写一条记录，就是在
-          <code>data/life</code> 里加一个 Markdown 文件。
-        </p>
         <p>慢一点，少一点，但留下来的都是真的。</p>
       </div>
 
