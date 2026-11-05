@@ -35,7 +35,7 @@ export default function ScrollProgress() {
     <div className="pointer-events-none fixed top-0 left-0 z-70 h-px w-full">
       <div
         ref={bar}
-        className="bg-clay-500 h-px w-full origin-left"
+        className="bg-dream-500 h-px w-full origin-left"
         style={{ transform: 'scaleX(0)' }}
       />
     </div>

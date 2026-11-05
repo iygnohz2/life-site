@@ -96,7 +96,7 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
   const chipClass = (isActive: boolean) =>
     [
       'text-[11.5px] tracking-[0.08em] transition-colors duration-300',
-      isActive ? 'text-clay-500' : 'text-ink-2 hover:text-ink',
+      isActive ? 'text-dream-500' : 'text-ink-2 hover:text-ink',
     ].join(' ')
 
   return (
@@ -166,7 +166,7 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
             type="button"
             onClick={() => setActive(index)}
             aria-label={`查看照片：${photo.caption ?? photo.slug}`}
-            className="group bg-surface focus-visible:outline-clay-500 relative mb-3 block w-full animate-[fadeIn_.45s_ease_both] cursor-zoom-in break-inside-avoid overflow-hidden rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 sm:mb-4"
+            className="group bg-surface focus-visible:outline-dream-500 relative mb-3 block w-full animate-[fadeIn_.45s_ease_both] cursor-zoom-in break-inside-avoid overflow-hidden rounded-[3px] focus-visible:outline-2 focus-visible:outline-offset-2 sm:mb-4"
           >
             <Image
               src={photo.src}

@@ -23,7 +23,7 @@ function Rating({ value, tone = 'ink' }: { value: number; tone?: 'ink' | 'light'
               i < value
                 ? tone === 'light'
                   ? 'rgba(255,255,255,0.9)'
-                  : 'var(--color-clay-500)'
+                  : 'var(--color-dream-500)'
                 : tone === 'light'
                   ? 'rgba(255,255,255,0.25)'
                   : 'var(--color-line)',

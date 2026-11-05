@@ -84,7 +84,7 @@ export default function PlacesPage() {
                         <li key={entry.slug}>
                           <Link
                             href={`/life/${entry.slug}`}
-                            className="group text-ink-2 hover:text-clay-500 flex items-baseline gap-3 text-[13px] transition-colors"
+                            className="group text-ink-2 hover:text-dream-500 flex items-baseline gap-3 text-[13px] transition-colors"
                           >
                             <span className="text-ink-3 font-mono text-[10.5px] tracking-[0.08em]">
                               {shortDate(entry.date)}

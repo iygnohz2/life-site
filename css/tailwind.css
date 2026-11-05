@@ -1,59 +1,59 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/forms";
+@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   设计系统 · 暖纸质手账
-   底色：米白 / 墨黑；强调：陶土红；分割：极细米线
+   设计系统 · DreamLand
+   夜梦：深墨蓝底 + 雾紫微光；晨雾：浅灰紫纸 + 同色系
+   强调用「雾紫」，次强调用「雾青」—— 低饱和，避免霓虹感
    ============================================================ */
 @theme {
   --font-sans:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', ui-sans-serif, sans-serif;
   --font-serif:
-    'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', Georgia, 'Times New Roman',
-    serif;
+    'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* 纸与墨 */
-  --color-paper: #f6f3ed;
-  --color-surface: #fffdf8;
-  --color-ink: #1c1a17;
-  --color-ink-2: #6d6559;
-  --color-ink-3: #a2988a;
-  --color-line: #e2dbce;
+  /* 纸与墨（浅色 = 晨雾） */
+  --color-paper: #f3f2f9;
+  --color-surface: #fbfaff;
+  --color-ink: #1a1927;
+  --color-ink-2: #5a5871;
+  --color-ink-3: #8d8ba1;
+  --color-line: #e3e1ee;
 
-  /* 陶土（主强调） */
-  --color-clay-50: #faf0eb;
-  --color-clay-100: #f2dcd2;
-  --color-clay-200: #e5bba8;
-  --color-clay-300: #d69578;
-  --color-clay-400: #c5714f;
-  --color-clay-500: #b3563a;
-  --color-clay-600: #95452e;
-  --color-clay-700: #763625;
-  --color-clay-800: #57281c;
-  --color-clay-900: #3b1b13;
+  /* 雾紫（主强调） */
+  --color-dream-50: #f6f2fd;
+  --color-dream-100: #ece4f9;
+  --color-dream-200: #dacdf1;
+  --color-dream-300: #c0ade5;
+  --color-dream-400: #a891d8;
+  --color-dream-500: #8b71c6;
+  --color-dream-600: #7256a9;
+  --color-dream-700: #5b4388;
+  --color-dream-800: #423163;
+  --color-dream-900: #2b2141;
 
-  /* 苔绿（次强调，用于心情/标签） */
-  --color-moss-300: #93a89a;
-  --color-moss-500: #4c6b58;
-  --color-moss-700: #2f463a;
+  /* 雾青（次强调，用于心情/标签） */
+  --color-mist-300: #9dbcbc;
+  --color-mist-500: #6a9593;
+  --color-mist-700: #476a69;
 
   /* 兼容基座里的 primary-* 用法 */
-  --color-primary-50: #faf0eb;
-  --color-primary-100: #f2dcd2;
-  --color-primary-200: #e5bba8;
-  --color-primary-300: #d69578;
-  --color-primary-400: #c5714f;
-  --color-primary-500: #b3563a;
-  --color-primary-600: #95452e;
-  --color-primary-700: #763625;
-  --color-primary-800: #57281c;
-  --color-primary-900: #3b1b13;
-  --color-primary-950: #2a130d;
+  --color-primary-50: #f6f2fd;
+  --color-primary-100: #ece4f9;
+  --color-primary-200: #dacdf1;
+  --color-primary-300: #c0ade5;
+  --color-primary-400: #a891d8;
+  --color-primary-500: #8b71c6;
+  --color-primary-600: #7256a9;
+  --color-primary-700: #5b4388;
+  --color-primary-800: #423163;
+  --color-primary-900: #2b2141;
+  --color-primary-950: #1c1530;
 
   --line-height-11: 2.75rem;
   --line-height-12: 3rem;
@@ -64,17 +64,39 @@
   --z-70: 70;
   --z-80: 80;
 
-  --radius-card: 4px;
+  --radius-card: 6px;
 }
 
-/* 暗色：墨纸 */
+/* 暗色 = 夜梦：深墨蓝，不是纯黑，留一点蓝的呼吸感 */
 html.dark {
-  --color-paper: #100f0e;
-  --color-surface: #191715;
-  --color-ink: #eae5dc;
-  --color-ink-2: #a49a8b;
-  --color-ink-3: #6d655a;
-  --color-line: #2a2724;
+  --color-paper: #080a12;
+  --color-surface: #10131d;
+  --color-ink: #e7e5f2;
+  --color-ink-2: #a19eb5;
+  --color-ink-3: #7c7994;
+  --color-line: #1e2130;
+
+  /* 暗底上把强调色提亮，保证对比度 */
+  --color-dream-300: #cfc0ee;
+  --color-dream-400: #b7a3e4;
+  --color-dream-500: #a68fdc;
+  --color-dream-600: #8f76c9;
+  --color-mist-300: #b2cdcd;
+  --color-mist-500: #81adab;
+  --color-mist-700: #5f8a88;
+}
+
+/* 氛围色：三层极淡光雾，模拟"梦里的光" */
+:root {
+  --glow-a: rgba(139, 113, 198, 0.14);
+  --glow-b: rgba(106, 149, 147, 0.1);
+  --glow-c: rgba(168, 145, 216, 0.12);
+}
+
+html.dark {
+  --glow-a: rgba(139, 113, 198, 0.16);
+  --glow-b: rgba(106, 149, 147, 0.09);
+  --glow-c: rgba(120, 100, 190, 0.14);
 }
 
 @layer base {
@@ -92,8 +114,21 @@ html.dark {
       'kern' on;
   }
 
+  /* 背景光雾：固定不动，随滚动"停"在视野里，像梦境不会被推开 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    background:
+      radial-gradient(58rem 40rem at 12% -8%, var(--glow-a) 0%, transparent 62%),
+      radial-gradient(44rem 34rem at 92% 4%, var(--glow-b) 0%, transparent 58%),
+      radial-gradient(50rem 40rem at 50% 108%, var(--glow-c) 0%, transparent 60%);
+  }
+
   ::selection {
-    background: color-mix(in oklab, var(--color-clay-500) 20%, transparent);
+    background: color-mix(in oklab, var(--color-dream-500) 22%, transparent);
   }
 
   h1,
@@ -115,8 +150,27 @@ html.dark {
   }
 
   html.dark body::after {
-    opacity: 0.05;
+    opacity: 0.04;
     mix-blend-mode: screen;
+  }
+
+  /* 引文：梦境那句话 + 右下署名 */
+  .dream-quote {
+    position: relative;
+    padding-left: 1.15rem;
+  }
+  .dream-quote::before {
+    content: '';
+    position: absolute;
+    top: 0.35em;
+    bottom: 0.35em;
+    left: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-dream-500) 55%, transparent),
+      transparent
+    );
   }
 
   ::-webkit-scrollbar {
@@ -143,7 +197,7 @@ html.dark {
 
   a,
   button {
-    outline-color: var(--color-clay-500);
+    outline-color: var(--color-dream-500);
   }
 
   a:focus-visible,
@@ -151,7 +205,7 @@ html.dark {
     outline: 2px solid;
     outline-offset: 3px;
     border-radius: 2px;
-    outline-color: var(--color-clay-500);
+    outline-color: var(--color-dream-500);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -189,7 +243,7 @@ html.dark {
     bottom: -3px;
     height: 1px;
     width: 0;
-    background: var(--color-clay-500);
+    background: var(--color-dream-500);
     transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .ul-grow:hover::after,
@@ -208,13 +262,13 @@ html.dark {
 
   .prose {
     & a {
-      color: var(--color-clay-500);
+      color: var(--color-dream-500);
       text-underline-offset: 3px;
       &:hover {
-        color: var(--color-clay-600);
+        color: var(--color-dream-600);
       }
       & code {
-        color: var(--color-clay-500);
+        color: var(--color-dream-500);
       }
     }
     & :where(h1, h2) {
@@ -227,18 +281,18 @@ html.dark {
       font-weight: 500;
     }
     & :where(code):not(pre code) {
-      color: var(--color-clay-600);
+      color: var(--color-dream-600);
     }
   }
 
   .prose-invert {
     & a {
-      color: var(--color-clay-400);
+      color: var(--color-dream-400);
       &:hover {
-        color: var(--color-clay-300);
+        color: var(--color-dream-300);
       }
       & code {
-        color: var(--color-clay-400);
+        color: var(--color-dream-400);
       }
     }
     & :where(h1, h2, h3, h4, h5, h6) {
@@ -256,6 +310,34 @@ html.dark {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* 梦雾漂移：极慢、极小幅度，只在余光里感觉得到 */
+@keyframes driftA {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.08);
+  }
+}
+
+@keyframes driftB {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-5%, -6%, 0) scale(1);
+  }
+}
+
+.drift-a {
+  animation: driftA 34s ease-in-out infinite;
+}
+.drift-b {
+  animation: driftB 42s ease-in-out infinite;
 }
 
 @keyframes fadeIn {

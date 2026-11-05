@@ -108,7 +108,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
           {prev ? (
             <Link href={`/life/${prev.slug}`} className="group py-6">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更早</div>
-              <div className="group-hover:text-clay-500 mt-2 font-serif text-[15px] transition-colors">
+              <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
                 {prev.title}
               </div>
             </Link>
@@ -118,7 +118,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
           {next ? (
             <Link href={`/life/${next.slug}`} className="group py-6 sm:text-right">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更新</div>
-              <div className="group-hover:text-clay-500 mt-2 font-serif text-[15px] transition-colors">
+              <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
                 {next.title}
               </div>
             </Link>

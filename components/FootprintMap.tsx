@@ -172,7 +172,7 @@ export default function FootprintMap({ points }: { points: PlacePoint[] }) {
             <polyline
               points={route.map((p) => `${p.x},${p.y}`).join(' ')}
               fill="none"
-              stroke="var(--color-clay-500)"
+              stroke="var(--color-dream-500)"
               strokeWidth="0.9"
               strokeDasharray="3 5"
               opacity="0.5"
@@ -198,14 +198,14 @@ export default function FootprintMap({ points }: { points: PlacePoint[] }) {
                   cx={p.x}
                   cy={p.y}
                   r={p.r + 10}
-                  fill="var(--color-clay-500)"
+                  fill="var(--color-dream-500)"
                   opacity={isActive ? 0.16 : 0.07}
                 />
                 <circle
                   cx={p.x}
                   cy={p.y}
                   r={p.r}
-                  fill="var(--color-clay-500)"
+                  fill="var(--color-dream-500)"
                   opacity={isActive ? 1 : 0.85}
                 />
                 <circle
@@ -213,7 +213,7 @@ export default function FootprintMap({ points }: { points: PlacePoint[] }) {
                   cy={p.y}
                   r={p.r + 3.5}
                   fill="none"
-                  stroke="var(--color-clay-500)"
+                  stroke="var(--color-dream-500)"
                   strokeWidth="0.6"
                   opacity={isActive ? 0.7 : 0}
                 />

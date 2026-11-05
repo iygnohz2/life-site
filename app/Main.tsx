@@ -33,9 +33,12 @@ const entries = [
 ]
 
 export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
+  const { text, emphasis, author } = siteMetadata.quote
+  const [quoteBefore, quoteAfter] = text.split(emphasis)
+
   return (
     <SectionContainer>
-      <section className="pt-16 pb-14 sm:pt-24 sm:pb-20">
+      <section className="pt-20 pb-14 sm:pt-28 sm:pb-20">
         <TodayLine />
         <h1
           className="rise mt-7 text-[clamp(2.1rem,5.6vw,3.4rem)] leading-[1.32] font-normal tracking-[0.02em]"
@@ -43,15 +46,28 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
         >
           把日子过成
           <br />
-          <span className="text-clay-500">值得记下</span>的样子
+          <span className="text-dream-500">值得记下</span>的样子
         </h1>
-        <p
-          className="text-ink-2 rise mt-8 max-w-lg text-[15px] leading-[2]"
+
+        <figure
+          className="dream-quote rise mt-11 w-fit max-w-xl"
           style={{ animationDelay: '180ms' }}
         >
-          {siteMetadata.description}
-          <br />
-          这里没有算法，也不追热点 —— 只是把想留住的东西，一件一件放进来。
+          <blockquote className="font-serif text-[clamp(1.05rem,2.4vw,1.4rem)] leading-[1.9] tracking-[0.02em] text-balance">
+            {quoteBefore}
+            <span className="text-dream-500">{emphasis}</span>
+            {quoteAfter}
+          </blockquote>
+          <figcaption className="text-ink-3 mt-3 text-right font-mono text-[11px] tracking-[0.12em]">
+            —— {author}
+          </figcaption>
+        </figure>
+
+        <p
+          className="text-ink-2 rise mt-9 max-w-lg text-[13.5px] leading-[2]"
+          style={{ animationDelay: '260ms' }}
+        >
+          {siteMetadata.tagline}
         </p>
       </section>
 
@@ -64,13 +80,13 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
           <TiltCard key={e.href} className="h-full">
             <Link
               href={e.href}
-              className="border-line bg-surface/70 hover:border-clay-300 group flex h-full flex-col justify-between rounded-[4px] border p-6 transition-colors duration-300"
+              className="group border-line/80 bg-surface/55 hover:border-dream-400/60 hover:bg-surface/85 flex h-full flex-col justify-between rounded-[6px] border p-6 backdrop-blur-[2px] transition-all duration-500"
             >
               <div className="text-ink-3 font-mono text-[11px] tracking-[0.2em]">{e.no}</div>
               <div className="mt-14">
                 <div className="font-serif text-[19px] tracking-[0.06em]">{e.title}</div>
-                <p className="text-ink-3 mt-3 text-[12.5px] leading-[1.9]">{e.desc}</p>
-                <div className="text-clay-500 mt-6 flex items-center gap-2 text-[12px] tracking-[0.1em] transition-transform duration-300 group-hover:translate-x-1">
+                <p className="text-ink-2 mt-3 text-[12.5px] leading-[1.9]">{e.desc}</p>
+                <div className="text-dream-500 mt-6 flex items-center gap-2 text-[12px] tracking-[0.1em] transition-transform duration-300 group-hover:translate-x-1">
                   <span>进去看看</span>
                   <span aria-hidden>→</span>
                 </div>
@@ -85,7 +101,7 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
           <p className="eyebrow">最近记下</p>
           <Link
             href="/life"
-            className="text-ink-3 hover:text-clay-500 text-[12px] tracking-[0.08em] transition-colors"
+            className="text-ink-3 hover:text-dream-500 text-[12px] tracking-[0.08em] transition-colors"
           >
             全部 →
           </Link>
@@ -99,7 +115,7 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
                   <span className="text-ink-3 w-11 shrink-0 font-mono text-[11px] tracking-[0.08em]">
                     {shortDate(item.date)}
                   </span>
-                  <span className="group-hover:text-clay-500 min-w-0 flex-1 truncate font-serif text-[15.5px] transition-colors duration-300">
+                  <span className="group-hover:text-dream-500 min-w-0 flex-1 truncate font-serif text-[15.5px] transition-colors duration-300">
                     {item.title}
                   </span>
                   {item.mood ? (

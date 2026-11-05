@@ -15,13 +15,13 @@ export type LifeEntry = {
 }
 
 export const MOOD_TONE: Record<string, string> = {
-  开心: 'var(--color-clay-400)',
-  温暖: 'var(--color-clay-300)',
+  开心: 'var(--color-dream-400)',
+  温暖: 'var(--color-dream-300)',
   平静: 'var(--color-ink-3)',
-  满足: 'var(--color-moss-500)',
-  低沉: 'var(--color-moss-300)',
+  满足: 'var(--color-mist-500)',
+  低沉: 'var(--color-mist-300)',
   疲惫: 'var(--color-ink-3)',
-  兴奋: 'var(--color-clay-500)',
+  兴奋: 'var(--color-dream-500)',
 }
 
 export const KIND_LABEL: Record<string, string> = {

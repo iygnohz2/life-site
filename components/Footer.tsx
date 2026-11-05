@@ -15,7 +15,7 @@ export default function Footer() {
         <p className="text-ink-3 text-[12px] tracking-[0.06em]">
           {`© ${new Date().getFullYear()} ${siteMetadata.author}`}
           <span className="mx-2 opacity-40">/</span>
-          {siteMetadata.description}
+          {siteMetadata.tagline}
         </p>
         <div className="text-ink-3 flex items-center gap-4 text-[12px] tracking-[0.06em]">
           <Link href="/about" className="hover:text-ink transition-colors">

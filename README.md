@@ -6,7 +6,7 @@
 ## 技术栈
 
 - Next.js 15（App Router，静态生成）+ React 19
-- Tailwind CSS v4（自定义暖纸质设计 token）
+- Tailwind CSS v4（自定义「夜梦」设计 token：墨蓝底 + 雾紫微光）
 - contentlayer2：Markdown/MDX → 类型化内容
 - 自托管思源宋体（`@fontsource/noto-serif-sc`），不依赖 Google Fonts
 

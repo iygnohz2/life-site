@@ -137,7 +137,7 @@ export default function FooterEgg({ memories }: { memories: Memory[] }) {
               <Link
                 href={`/life/${result.memory.slug}`}
                 onClick={() => setOpened(false)}
-                className="text-clay-500 hover:text-clay-600 group flex items-center gap-2 text-[12.5px] tracking-[0.08em] transition-colors"
+                className="text-dream-500 hover:text-dream-600 group flex items-center gap-2 text-[12.5px] tracking-[0.08em] transition-colors"
               >
                 去读这一页
                 <span

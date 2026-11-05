@@ -31,7 +31,7 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
                           className="inline-block h-[5px] w-[5px] shrink-0 translate-y-[-2px] rounded-full"
                           style={{ background: tone }}
                         />
-                        <h3 className="group-hover:text-clay-500 font-serif text-[17px] leading-snug transition-colors duration-300">
+                        <h3 className="group-hover:text-dream-500 font-serif text-[17px] leading-snug transition-colors duration-300">
                           {entry.title}
                         </h3>
                       </div>
