@@ -389,11 +389,18 @@ async function publish(message) {
   }
   const msg = (message || '').trim() || `内容更新 ${new Date().toISOString().slice(0, 10)}`
 
-  await run('git', ['add', '-A'], { cwd: ROOT })
-  try {
-    await run('git', ['commit', '-m', msg], { cwd: ROOT })
-  } catch (e) {
-    throw new Error(`提交失败：${errorText(e)}`)
+  // 只有存在文件改动时才提交；若只是“有未推送的提交”，直接进入 pull + push
+  if (status.files.length) {
+    await run('git', ['add', '-A'], { cwd: ROOT })
+    try {
+      await run('git', ['commit', '-m', msg], { cwd: ROOT })
+    } catch (e) {
+      if (/nothing to commit/i.test(errorText(e))) {
+        // 状态检查与提交之间的竞态：没有可提交内容，忽略即可
+      } else {
+        throw new Error(`提交失败：${errorText(e)}`)
+      }
+    }
   }
   try {
     await gitWithRetry(['pull', '--rebase', '--autostash'])
