@@ -1,12 +1,14 @@
 import Link from '@/components/Link'
 import SectionContainer from '@/components/SectionContainer'
 import TodayLine from '@/components/TodayLine'
+import Drift from '@/components/Drift'
 import siteMetadata from '@/data/siteMetadata'
 import { shortDate, type LifeEntry } from '@/lib/life'
 
 const entries = [
   {
     href: '/life',
+    speed: 0.05,
     title: '生活流',
     desc: '按时间读的日子，好天气和坏心情都算数。',
     pad: 'sm:pl-0',
@@ -15,6 +17,7 @@ const entries = [
   },
   {
     href: '/photos',
+    speed: 0.14,
     title: '相册',
     desc: '被留下来的光。没有主题，只有当时想按快门。',
     pad: 'sm:pl-20',
@@ -23,6 +26,7 @@ const entries = [
   },
   {
     href: '/places',
+    speed: 0.08,
     title: '足迹',
     desc: '去过的地方，和在那里发生的小事。',
     pad: 'sm:pl-8',
@@ -31,6 +35,7 @@ const entries = [
   },
   {
     href: '/books',
+    speed: 0.18,
     title: '书架',
     desc: '读过的和正在读的，都立在架子上。',
     pad: 'sm:pl-28',
@@ -56,46 +61,64 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
           }}
         />
 
-        <TodayLine />
+        <div className="sm:flex sm:items-stretch sm:justify-between sm:gap-14">
+          {/* 右栏：桌面端标题竖排，同句重影压在身后 */}
+          <div className="relative sm:order-2 sm:shrink-0">
+            <h1 className="develop relative z-10 font-light tracking-[0.12em] text-[clamp(2rem,5vw,3.2rem)] [writing-mode:horizontal-tb] sm:text-[1.6rem] sm:leading-[1.65] sm:tracking-[0.18em] sm:[writing-mode:vertical-rl]">
+              把日子过成
+              <br className="sm:hidden" />
+              <span className="text-dream-300">值得记下</span>的样子
+            </h1>
 
-        <h1 className="develop mt-7 max-w-[15ch] text-[clamp(2rem,5vw,3.2rem)] leading-[1.28] font-light tracking-[0.03em]">
-          把日子过成
-          <br />
-          <span className="text-dream-300">值得记下</span>的样子
-        </h1>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 hidden translate-x-[5px] -translate-y-[4px] font-serif text-[1.6rem] leading-[1.65] tracking-[0.18em] text-dream-200/[0.16] select-none [writing-mode:vertical-rl] sm:block"
+            >
+              把日子过成值得记下的样子
+            </span>
+          </div>
 
-        <figure
-          className="dream-quote develop mt-10 w-fit max-w-[34rem]"
-          style={{ animationDelay: '320ms' }}
-        >
-          <blockquote className="text-ink-2 font-serif text-[clamp(1.02rem,2.2vw,1.32rem)] leading-[2] text-balance">
-            {quoteBefore}
-            <span className="text-dream-300">{emphasis}</span>
-            {quoteAfter}
-          </blockquote>
-          <figcaption
-            className="ghost text-ink-3 mt-4 block w-full text-right font-mono text-[10.5px] tracking-[0.16em]"
-            data-ghost={`—— ${author}`}
-          >
-            —— {author}
-          </figcaption>
-        </figure>
+          {/* 左栏 */}
+          <div className="sm:order-1 sm:flex sm:flex-1 sm:flex-col sm:justify-center sm:pt-1">
+            <TodayLine />
+
+            <figure
+              className="dream-quote develop mt-10 w-fit max-w-[34rem]"
+              style={{ animationDelay: '320ms' }}
+            >
+              <blockquote className="text-ink-2 font-serif text-[clamp(1.02rem,2.2vw,1.32rem)] leading-[2] text-balance">
+                {quoteBefore}
+                <span className="text-dream-300">{emphasis}</span>
+                {quoteAfter}
+              </blockquote>
+              <figcaption
+                className="ghost text-ink-3 mt-4 block w-full text-right font-mono text-[10.5px] tracking-[0.16em]"
+                data-ghost={`—— ${author}`}
+              >
+                —— {author}
+              </figcaption>
+            </figure>
+          </div>
+        </div>
       </section>
 
       {/* 入口：四行参差的碎片，指到哪一行，其余就退开 */}
+      {/* 入口：四行参差的碎片，滚动时各走各的速度 */}
       <nav className="entries -mt-2" aria-label="站点入口">
         {entries.map((e) => (
-          <Link key={e.href} href={e.href} className={`entry block pb-5 ${e.pad} ${e.gap}`}>
-            <span
-              className={`ghost inline-block font-serif tracking-[0.14em] ${e.size}`}
-              data-ghost={e.title}
-            >
-              {e.title}
-            </span>
-            <span className="text-ink-2 mt-1.5 block max-w-[26rem] text-[12.5px] leading-[1.95] tracking-[0.02em]">
-              {e.desc}
-            </span>
-          </Link>
+          <Drift key={e.href} speed={e.speed} className="will-change-transform">
+            <Link href={e.href} className={`entry block pb-5 ${e.pad} ${e.gap}`}>
+              <span
+                className={`ghost inline-block font-serif tracking-[0.14em] ${e.size}`}
+                data-ghost={e.title}
+              >
+                {e.title}
+              </span>
+              <span className="text-ink-2 mt-1.5 block max-w-[26rem] text-[12.5px] leading-[1.95] tracking-[0.02em]">
+                {e.desc}
+              </span>
+            </Link>
+          </Drift>
         ))}
       </nav>
 
