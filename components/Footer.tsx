@@ -1,5 +1,6 @@
 import Link from './Link'
 import FooterEgg, { type Memory } from './FooterEgg'
+import StudioLink from './StudioLink'
 import siteMetadata from '@/data/siteMetadata'
 import { allLives } from 'contentlayer/generated'
 import type { LifeEntry } from '@/lib/life'
@@ -18,6 +19,7 @@ export default function Footer() {
           {siteMetadata.tagline}
         </p>
         <div className="text-ink-3 flex items-center gap-4 text-[12px] tracking-[0.06em]">
+          <StudioLink />
           <Link href="/about" className="hover:text-ink transition-colors">
             关于
           </Link>
