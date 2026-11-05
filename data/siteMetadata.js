@@ -17,7 +17,7 @@ const siteMetadata = {
   language: 'zh-CN',
   locale: 'zh-CN',
   theme: 'dark',
-  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com').replace(/\/$/, ''),
+  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || 'https://iygnohz.cn').replace(/\/$/, ''),
   siteRepo: '',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,

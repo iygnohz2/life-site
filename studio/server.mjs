@@ -163,18 +163,34 @@ function listPhotos() {
     .sort((a, b) => b.name.localeCompare(a.name))
 }
 
+/** 生成安全的文件名：保留中英文数字，全中文原名时补日期前缀，避免一堆横线 */
+function safePhotoName(original, ext) {
+  const raw = String(original).replace(/\.\w+$/, '')
+  let base = raw
+    .replace(/[^\w\u4e00-\u9fa5.-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  const date = new Date().toISOString().slice(0, 10)
+  if (!base || base.replace(/-/g, '').length < 2) {
+    const stamp = new Date().toTimeString().slice(0, 8).replace(/:/g, '')
+    base = `${date}-${stamp}`
+  } else if (!/^\d{4}-\d{2}-\d{2}/.test(base)) {
+    base = `${date}-${base}`
+  }
+  return `${base}.${ext}`
+}
+
 async function savePhoto(fileName, buffer) {
   const { default: sharp } = await import('sharp')
-  const clean = fileName.replace(/[^\w.-]/g, '-')
   const img = sharp(buffer).rotate()
   const info = await img.metadata()
   const resized = img.resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
   const out = info.hasAlpha
     ? await resized.png({ quality: 82 }).toBuffer()
     : await resized.jpeg({ quality: 82 }).toBuffer()
-  const finalName = info.hasAlpha
-    ? clean.replace(/\.\w+$/, '.png')
-    : clean.replace(/\.\w+$/, '.jpg')
+  const ext = info.hasAlpha ? 'png' : 'jpg'
+  const finalName = safePhotoName(fileName, ext)
 
   writeSafe(path.join(PHOTO_DIR, finalName), out)
   const meta = await sharp(out).metadata()
@@ -185,6 +201,31 @@ async function savePhoto(fileName, buffer) {
     bytes: out.length,
     original: buffer.length,
   }
+}
+
+/** 删除照片：同时清理对应的 meta 记录 */
+function deletePhoto(name) {
+  if (!/^[\w\u4e00-\u9fa5.-]+$/.test(name) || name.includes('..')) {
+    throw new Error('文件名不合法')
+  }
+  const file = path.join(PHOTO_DIR, name)
+  if (!fs.existsSync(file)) throw new Error('文件不存在')
+
+  // 移到回收站目录，而不是直接删，给你留个反悔余地
+  const trashDir = path.join(ROOT, '.studio-backup', 'trash')
+  fs.mkdirSync(trashDir, { recursive: true })
+  fs.renameSync(file, path.join(trashDir, name))
+
+  // 同步删除 meta 里的记录
+  const metaFile = path.join(SITE_DATA, 'photos.meta.json')
+  if (fs.existsSync(metaFile)) {
+    const meta = JSON.parse(fs.readFileSync(metaFile, 'utf8'))
+    if (meta[name]) {
+      delete meta[name]
+      writeSafe(metaFile, JSON.stringify(meta, null, 2))
+    }
+  }
+  return { name }
 }
 
 function savePhotoMeta(name, patch) {
@@ -487,6 +528,11 @@ app.patch('/api/photos', wrap((req) => savePhotoMeta(req.body.name, {
   caption: req.body.caption,
   place: req.body.place,
 })))
+
+app.delete('/api/photos', (req, res, next) => {
+  const name = String(req.query.name || '')
+  wrap(() => deletePhoto(name))(req, res, next)
+})
 
 app.get('/api/books', wrap(() => readBooks()))
 app.post('/api/books', wrap((req) => writeBooks(req.body?.books ?? [])))

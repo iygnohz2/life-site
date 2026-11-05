@@ -291,6 +291,7 @@ async function loadPhotos() {
         <div class="name">${esc(p.name)}</div>
         <input class="cap-in" placeholder="说明文字" value="${esc(p.meta.caption || '')}" />
         <input class="place-in" placeholder="地点" value="${esc(p.meta.place || '')}" />
+        <button class="del-photo" title="删除这张照片">删除</button>
       </div>`
     )
     .join('')
@@ -309,6 +310,16 @@ async function loadPhotos() {
       })
     }
     card.querySelectorAll('input').forEach((i) => i.addEventListener('blur', save))
+
+    card.querySelector('.del-photo').addEventListener('click', async () => {
+      if (!confirm('确定删除这张照片吗？\n（会移到 .studio-backup/trash 里，还能找回）')) return
+      try {
+        await api('/api/photos?name=' + encodeURIComponent(name), { method: 'DELETE' })
+        loadPhotos()
+      } catch (e) {
+        alert('删除失败：' + e.message)
+      }
+    })
   })
 }
 

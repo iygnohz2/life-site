@@ -1,3 +1,10 @@
 {
-  "books": []
+  "books": [
+    {
+      "title": "《梦的解析》",
+      "author": "弗洛伊德",
+      "status": "done",
+      "rating": 5
+    }
+  ]
 }

@@ -271,3 +271,19 @@ p.sub { color: var(--ink-2); font-size: 12.5px; line-height: 1.95; margin: 14px 
 .tbl .x:hover { color: var(--danger); }
 .tbl input, .tbl select { padding: 7px 9px; font-size: 12px; }
 .tbl .empty { padding: 18px 0; color: var(--ink-3); font-size: 12px; }
+
+.del-photo {
+  margin-top: 8px;
+  width: 100%;
+  padding: 6px 0;
+  border: 1px solid rgba(217, 138, 122, 0.4);
+  background: transparent;
+  color: var(--danger);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.del-photo:hover { background: rgba(217, 138, 122, 0.12); border-color: var(--danger); }
