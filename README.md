@@ -21,6 +21,7 @@ npm run preview  # build + serve 一条命令搞定，发布前用这个走一�
 ```
 
 上线与环境变量、日常更新、备份排错，见 **[DEPLOY.md](DEPLOY.md)**。
+改配色、文案、加新页面、加新内容类型，见 **[CUSTOMIZE.md](CUSTOMIZE.md)**。
 
 ## 写一条记录
 
