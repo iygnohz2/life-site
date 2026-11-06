@@ -1,3 +1,34 @@
 {
-  "tracks": {}
+  "tracks": [
+    {
+      "title": "[FREE]混沌武士 x Nujabes x 蛋堡 TYPE BEAT HBD",
+      "artist": "Keerad",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/01.%20Keerad%20-%20%5BFREE%5D%E6%B7%B7%E6%B2%8C%E6%AD%A6%E5%A3%AB%20x%20Nujabes%20x%20%E8%9B%8B%E5%A0%A1%20TYPE%20BEAT%20HBD.mp3"
+    },
+    {
+      "title": "[FREE]Frank Ocean x Joji Type Beat GYM",
+      "artist": "Keerad",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/02.%20Keerad%20-%20%5BFREE%5DFrank%20Ocean%20x%20Joji%20Type%20Beat%20GYM.mp3"
+    },
+    {
+      "title": "【Free】“情绪爱” Sad Piano+Emo+情绪 - Type beat",
+      "artist": "ZN Kill This Vibe",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/03.%20ZN%20Kill%20This%20Vibe%20-%20%E3%80%90Free%E3%80%91%E2%80%9C%E6%83%85%E7%BB%AA%E7%88%B1%E2%80%9D%20Sad%20Piano%2BEmo%2B%E6%83%85%E7%BB%AA%20-%20Type%20beat.mp3"
+    },
+    {
+      "title": "Shootout",
+      "artist": "Izzamuzzic; Julien Marchal",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/04.%20Izzamuzzic%3B%20Julien%20Marchal%20-%20Shootout.mp3"
+    },
+    {
+      "title": "Shawty",
+      "artist": "SHYY BEATS",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/05.%20SHYY%20BEATS%20-%20Shawty.mp3"
+    },
+    {
+      "title": "Phone Kisses",
+      "artist": "suhmeduh",
+      "url": "https://music-1332997158.cos.ap-guangzhou.myqcloud.com/06.%20suhmeduh%20-%20Phone%20Kisses.mp3"
+    }
+  ]
 }
