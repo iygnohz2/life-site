@@ -164,18 +164,39 @@ export default function MusicPlayer({ tracks }: { tracks: Track[] }) {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          aria-label="打开音乐播放器"
-          className={`border-line fixed right-4 bottom-4 z-60 flex h-11 w-11 items-center justify-center rounded-full border shadow-[0_8px_30px_rgba(0,0,0,0.28)] backdrop-blur transition-all duration-300 ${
-            playing
-              ? 'text-dream-500 bg-surface/85'
-              : 'text-ink-2 bg-surface/70 hover:text-ink hover:bg-surface/90'
-          }`}
+          aria-label="Open music player"
+          className="group fixed right-3 bottom-20 z-60 sm:top-[58%] sm:bottom-auto sm:-translate-y-1/2"
         >
-          <EqBars active={playing} />
+          {/* 月光柔光：偏心的一团，会呼吸、会漂移 */}
+          <span
+            aria-hidden
+            className="moon-pulse pointer-events-none absolute -inset-7 blur-2xl"
+            style={{
+              background:
+                'radial-gradient(55% 50% at 42% 38%, color-mix(in oklab, var(--color-dream-400) 52%, transparent) 0%, color-mix(in oklab, var(--color-mist-500) 30%, transparent) 46%, transparent 70%)',
+            }}
+          />
+          <span
+            className={`border-line bg-surface/70 relative flex h-12 w-12 items-center justify-center border backdrop-blur transition-all duration-300 sm:h-auto sm:w-auto sm:flex-col sm:gap-4 sm:px-[10px] sm:py-7 ${
+              playing
+                ? 'border-dream-500/45 text-dream-400 bg-surface/85'
+                : 'text-ink-2 hover:border-dream-500/35 hover:text-ink hover:bg-surface/90'
+            }`}
+            style={{ borderRadius: '58% 42% 50% 48% / 55% 45% 58% 42%' }}
+          >
+            <span className="hidden flex-col items-center gap-[3px] sm:flex">
+              <span className="music-letter text-[12px] leading-none">M</span>
+              <span className="music-letter text-[12px] leading-none">U</span>
+              <span className="music-letter text-[12px] leading-none">S</span>
+              <span className="music-letter text-[12px] leading-none">I</span>
+              <span className="music-letter text-[12px] leading-none">C</span>
+            </span>
+            <EqBars active={playing} />
+          </span>
         </button>
       ) : (
         <div
-          className="fixed right-4 bottom-4 z-60 w-[276px] max-w-[calc(100vw-32px)]"
+          className="fixed right-3 bottom-20 z-60 w-[276px] max-w-[calc(100vw-32px)] sm:top-[58%] sm:bottom-auto sm:-translate-y-1/2"
           style={{ animation: 'zoomIn .32s cubic-bezier(.22,1,.36,1) both' }}
         >
           <div className="border-line bg-surface rounded-[6px] border px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.45)] ring-1 ring-white/[0.04]">

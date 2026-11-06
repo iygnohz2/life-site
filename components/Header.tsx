@@ -8,6 +8,7 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import ScatterText from './ScatterText'
 
 const Header = () => {
   const pathname = usePathname()
@@ -37,9 +38,12 @@ const Header = () => {
           aria-label={siteMetadata.headerTitle}
           className="group flex items-baseline gap-3"
         >
-          <span className="font-serif text-[18px] leading-none font-light tracking-[0.08em]">
-            {siteMetadata.headerTitle}
-          </span>
+          <ScatterText
+            text={siteMetadata.headerTitle}
+            direction="h"
+            seed={7}
+            className="gap-[0.04em] font-serif text-[18px] leading-none font-light"
+          />
           {siteMetadata.headerSubtitle ? (
             <span className="eyebrow hidden translate-y-[-1px] sm:inline">
               {siteMetadata.headerSubtitle}
