@@ -469,6 +469,24 @@ html.light {
   opacity: 1;
 }
 
+/* 字云漂浮：每个字以不同幅度/周期/相位缓慢浮动，悬停（对焦）时定格 */
+.cloud-float {
+  display: block;
+  animation: cloudFloat var(--fd, 8s) ease-in-out var(--fdelay, 0s) infinite;
+}
+.scatter-cloud:not(.scatter-static):hover .cloud-float {
+  animation: none;
+}
+@keyframes cloudFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(var(--fx, 0.3em), var(--fy, -0.25em), 0) rotate(var(--fr, 3deg));
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;

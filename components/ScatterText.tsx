@@ -67,16 +67,27 @@ export default function ScatterText({
           const o = (0.72 + drift01(i + seed * 5) * 0.28).toFixed(2)
           // 收拢目标：竖排一列，逐字向下排开，整体居中
           const sy = ((k - (n - 1) / 2) * lineStep).toFixed(3)
+          // 漂浮：每字不同的幅度、周期与相位，缓慢地各自浮动
+          const fx = ((drift01(i + seed * 13) - 0.5) * 0.6).toFixed(3)
+          const fy = ((drift01(i + seed * 17) - 0.5) * 0.7).toFixed(3)
+          const fr = ((drift01(i + seed * 29) - 0.5) * 6).toFixed(2)
+          const fdNum = 6 + drift01(i + seed * 19) * 4
+          const fdelay = (-drift01(i + seed * 23) * fdNum).toFixed(2)
           const style = {
             '--x': `${x}em`,
             '--y': `${y}em`,
             '--sy': `${sy}em`,
             '--rot': `${rot}deg`,
             '--o': o,
+            '--fx': `${fx}em`,
+            '--fy': `${fy}em`,
+            '--fr': `${fr}deg`,
+            '--fd': `${fdNum.toFixed(2)}s`,
+            '--fdelay': `${fdelay}s`,
           } as CSSProperties
           return (
             <span key={i} className={`scatter-char ${isEm(i) ? emphasisClass : ''}`} style={style}>
-              {ch}
+              <span className="cloud-float">{ch}</span>
             </span>
           )
         })}
