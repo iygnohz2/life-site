@@ -18,6 +18,7 @@
 /out/
 public/sitemap.xml
 .vercel
+*.tsbuildinfo
 
 # production
 /build

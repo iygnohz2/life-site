@@ -58,26 +58,11 @@
     "**/*.tsx",
     ".contentlayer/generated",
     ".contentlayer/generated/**/*.json",
-    ".next-b2/types/**/*.ts",
-    ".next-b3/types/**/*.ts",
-    ".next-b4/types/**/*.ts",
-    ".next-build/types/**/*.ts",
-    ".next-dev/types/**/*.ts",
-    ".next-s1/types/**/*.ts",
-    ".next-s2/types/**/*.ts",
-    ".next-s3/types/**/*.ts",
-    ".next-s4/types/**/*.ts",
-    ".next-s5/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    ".next/types/**/*.ts",
-    "next-env.d.ts",
-    ".next-s6/types/**/*.ts"
+    "next-env.d.ts"
   ],
   "exclude": [
     "node_modules",
-    ".next",
-    ".next-dev*",
-    ".next-prod*",
+    ".next*",
     "_sample-content"
   ]
 }

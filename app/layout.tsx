@@ -10,6 +10,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Ambient from '@/components/Ambient'
 import ScrollProgress from '@/components/ScrollProgress'
+import MusicPlayer from '@/components/MusicPlayer'
+import { getTracks } from '@/lib/music.server'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
@@ -44,6 +46,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const basePath = process.env.BASE_PATH || ''
+  const tracks = getTracks()
 
   return (
     <html lang={siteMetadata.language} className="scroll-smooth" suppressHydrationWarning>
@@ -79,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
           </SearchProvider>
+          {tracks.length > 0 ? <MusicPlayer tracks={tracks} /> : null}
         </ThemeProviders>
       </body>
     </html>

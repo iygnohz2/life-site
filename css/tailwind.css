@@ -366,6 +366,17 @@ html.light {
   }
 }
 
+/* 音乐播放器：三根音柱呼吸 */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
 /* 梦雾漂移：极慢、极小幅度，只在余光里感觉得到 */
 @keyframes driftA {
   0%,
