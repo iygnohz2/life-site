@@ -6,6 +6,15 @@ const DIR = path.join(process.cwd(), 'public', 'music')
 const FILE = path.join(process.cwd(), 'site-data', 'music.json')
 const AUDIO_EXT = /\.(mp3|m4a|aac|ogg|wav|flac)$/i
 
+/** 外链曲目（如腾讯云 COS）：url 必填，title/artist 可选 */
+type RemoteTrack = { title?: string; artist?: string; url?: string }
+/** 本地曲目元数据：按文件名索引 */
+type LocalMeta = Record<string, { title?: string; artist?: string }>
+
+interface MusicConfig {
+  tracks?: RemoteTrack[] | LocalMeta
+}
+
 /**
  * 获取播放列表。
  *
@@ -19,9 +28,9 @@ const AUDIO_EXT = /\.(mp3|m4a|aac|ogg|wav|flac)$/i
  * 只在服务端调用（layout / 页面），不要被客户端组件 import。
  */
 export function getTracks(): Track[] {
-  let raw: any = null
+  let raw: MusicConfig | null = null
   try {
-    raw = JSON.parse(fs.readFileSync(FILE, 'utf8'))
+    raw = JSON.parse(fs.readFileSync(FILE, 'utf8')) as MusicConfig
   } catch {
     raw = null
   }
@@ -29,8 +38,11 @@ export function getTracks(): Track[] {
   // 1. 外链模式：tracks 是「非空数组」
   if (raw && Array.isArray(raw.tracks) && raw.tracks.length) {
     return raw.tracks
-      .filter((t: any) => t && typeof t.url === 'string' && t.url.trim())
-      .map((t: any) => ({
+      .filter(
+        (t): t is RemoteTrack & { url: string } =>
+          typeof t.url === 'string' && t.url.trim().length > 0
+      )
+      .map((t) => ({
         title: t.title || '未命名',
         artist: t.artist || '',
         src: t.url.trim(),
@@ -46,8 +58,8 @@ export function getTracks(): Track[] {
   }
   if (!files.length) return []
 
-  let meta: Record<string, { title?: string; artist?: string }> = {}
-  if (raw && raw.tracks && !Array.isArray(raw.tracks) && typeof raw.tracks === 'object') {
+  let meta: LocalMeta = {}
+  if (raw && raw.tracks && !Array.isArray(raw.tracks)) {
     meta = raw.tracks
   }
 
