@@ -68,8 +68,8 @@ export default function ScatterText({
           // 收拢目标：竖排一列，逐字向下排开，整体居中
           const sy = ((k - (n - 1) / 2) * lineStep).toFixed(3)
           // 漂浮：每字不同的幅度、周期与相位，缓慢地各自浮动
-          const fx = ((drift01(i + seed * 13) - 0.5) * 0.6).toFixed(3)
-          const fy = ((drift01(i + seed * 17) - 0.5) * 0.7).toFixed(3)
+          const fx = ((drift01(i + seed * 13) - 0.5) * 1.2).toFixed(3)
+          const fy = ((drift01(i + seed * 17) - 0.5) * 1.4).toFixed(3)
           const fr = ((drift01(i + seed * 29) - 0.5) * 6).toFixed(2)
           const fdNum = 6 + drift01(i + seed * 19) * 4
           const fdelay = (-drift01(i + seed * 23) * fdNum).toFixed(2)

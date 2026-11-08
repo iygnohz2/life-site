@@ -97,17 +97,11 @@ module.exports = () => {
         },
       ]
     },
-    webpack: (config, options) => {
+    webpack: (config) => {
       config.module.rules.push({
         test: /\.svg$/,
         use: ['@svgr/webpack'],
       })
-
-      // 开发期的 eval-source-map 会把整份源码内联进 chunk，单文件能到 3MB，
-      // 在部分环境（代理/受限浏览器）里会被截断导致脚本解析失败。
-      if (options.dev) {
-        config.devtool = 'source-map'
-      }
 
       return config
     },
