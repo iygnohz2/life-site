@@ -8,10 +8,22 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
     <div>
       {groups.map((group) => (
         <section key={group.year} className="mb-10">
-          <div className="bg-paper/85 sticky top-16 z-10 flex items-center gap-4 py-3 backdrop-blur">
-            <span className="text-ink-3 font-mono text-[12px] tracking-[0.2em]">{group.year}</span>
-            <span className="bg-line h-px flex-1" />
-            <span className="text-ink-3 text-[11px]">{group.items.length} 篇</span>
+          <div className="sticky top-16 z-10 flex items-center gap-4 py-3">
+            {/* 雾带遮罩：中间稍实、左右淡出，替代原来的硬黑矩形 */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -inset-x-8 inset-y-0 backdrop-blur-sm"
+              style={{
+                background:
+                  'linear-gradient(to right, transparent 0%, var(--color-paper) 12%, var(--color-paper) 88%, transparent 100%)',
+                opacity: 0.6,
+              }}
+            />
+            <span className="text-ink-3 relative font-mono text-[12px] tracking-[0.2em]">
+              {group.year}
+            </span>
+            <span className="bg-line relative h-px flex-1" />
+            <span className="text-ink-3 relative text-[11px]">{group.items.length} 篇</span>
           </div>
 
           <ul>
