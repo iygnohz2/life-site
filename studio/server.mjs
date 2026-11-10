@@ -12,6 +12,7 @@ import net from 'node:net'
 import { spawn, execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { fileURLToPath } from 'node:url'
+import { createHash } from 'node:crypto'
 import matter from 'gray-matter'
 
 const run = promisify(execFile)
@@ -87,6 +88,7 @@ function listPosts() {
         place: data.place ?? '',
         tags: data.tags ?? [],
         draft: data.draft === true,
+        locked: data.locked === true,
       }
     })
     .sort((a, b) => b.date.localeCompare(a.date))
@@ -138,6 +140,7 @@ function savePost(input) {
     ...(input.summary ? { summary: input.summary } : {}),
     ...(input.tags?.length ? { tags: input.tags } : {}),
     ...(input.draft ? { draft: true } : {}),
+    ...(input.locked ? { locked: true } : {}),
   }
 
   const out = matter
@@ -293,6 +296,22 @@ function readJsonRaw(name) {
   } catch {
     return null
   }
+}
+
+// ---------- 梦之钥 ----------
+
+function readDreamKey() {
+  const data = readJsonRaw('dream-key.json') ?? {}
+  return typeof data.hash === 'string' ? data.hash : ''
+}
+
+function setDreamKey(password) {
+  const pwd = String(password || '').trim()
+  if (!pwd) throw new Error('梦之钥不能为空')
+  if (pwd.length < 4) throw new Error('梦之钥至少 4 位')
+  const hash = createHash('sha256').update(pwd, 'utf8').digest('hex')
+  writeSafe(path.join(SITE_DATA, 'dream-key.json'), JSON.stringify({ hash }, null, 2) + '\n')
+  return { changed: true }
 }
 
 function readJson(name) {
@@ -582,6 +601,9 @@ app.post('/api/books', wrap((req) => writeBooks(req.body?.books ?? [])))
 
 app.get('/api/places', wrap(() => readPlaces()))
 app.post('/api/places', wrap((req) => writeTrips(req.body?.trips ?? [])))
+
+app.get('/api/dream-key', wrap(() => ({ configured: Boolean(readDreamKey()) })))
+app.post('/api/dream-key', wrap((req) => setDreamKey(req.body?.password)))
 
 app.get('/api/git', wrap(() => gitStatus()))
 app.post('/api/git', wrap((req) => publish(req.body?.message)))

@@ -129,6 +129,26 @@ async function loadOverview() {
   }
 }
 
+/* ---------- 梦之钥 ---------- */
+
+$('dk-save').addEventListener('click', async () => {
+  const hint = $('dk-hint')
+  hint.className = 'hint'
+  hint.textContent = '更新中…'
+  try {
+    await api('/api/dream-key', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ password: $('dk-password').value }),
+    })
+    $('dk-password').value = ''
+    hint.textContent = '梦之钥已更新，记得去「发布」重新上线'
+  } catch (e) {
+    hint.className = 'hint err'
+    hint.textContent = e.message
+  }
+})
+
 /* ---------- 写日记 ---------- */
 
 let currentSlug = ''
@@ -156,6 +176,7 @@ $('post-picker').addEventListener('change', async (e) => {
     $('f-place').value = ''
     $('f-tags').value = ''
     $('f-summary').value = ''
+    $('f-lock').value = ''
     renderPreview()
     return
   }
@@ -168,6 +189,7 @@ $('post-picker').addEventListener('change', async (e) => {
   $('f-place').value = fm.place || ''
   $('f-tags').value = (fm.tags || []).join(', ')
   $('f-summary').value = fm.summary || ''
+  $('f-lock').value = fm.locked ? 'locked' : ''
   $('f-body').value = post.body || ''
   renderPreview()
 })
@@ -190,6 +212,7 @@ async function savePost(draft) {
         place: $('f-place').value,
         summary: $('f-summary').value,
         draft,
+        locked: $('f-lock').value === 'locked',
         tags: $('f-tags')
           .value.split(/[,，\s]+/)
           .map((t) => t.trim())

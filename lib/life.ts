@@ -12,6 +12,7 @@ export type LifeEntry = {
   photos?: string[]
   cover?: string
   draft?: boolean
+  locked?: boolean
 }
 
 export const MOOD_TONE: Record<string, string> = {

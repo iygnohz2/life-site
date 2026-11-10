@@ -43,6 +43,20 @@
           <div class="stats" id="stats"></div>
           <h2 class="section-title">最近改过</h2>
           <div class="list" id="recent"></div>
+          <h2 class="section-title">梦之钥</h2>
+          <p style="color: var(--ink-3); font-size: 12px; margin: 8px 0 0">
+            上锁日记的统一密码，访客输入后才能解开「朦胧的梦」。
+          </p>
+          <div class="actions" style="margin-top: 10px">
+            <input
+              id="dk-password"
+              type="password"
+              placeholder="新的梦之钥（至少 4 位）"
+              style="max-width: 260px"
+            />
+            <button class="btn primary" id="dk-save">更新梦之钥</button>
+            <span class="hint" id="dk-hint"></span>
+          </div>
         </section>
 
         <!-- 写日记 -->
@@ -90,6 +104,13 @@
             <div class="field">
               <label class="cap">摘要</label>
               <input id="f-summary" placeholder="一句话" />
+            </div>
+            <div class="field wide">
+              <label class="cap">权限</label>
+              <select id="f-lock">
+                <option value="">公开 · 所有人可见</option>
+                <option value="locked">上锁 · 需梦之钥</option>
+              </select>
             </div>
           </div>
 

@@ -29,6 +29,7 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
           <ul>
             {group.items.map((entry) => {
               const tone = (entry.mood && MOOD_TONE[entry.mood]) || 'var(--color-ink-3)'
+              const locked = entry.locked === true
               return (
                 <li key={entry.slug} className="border-line/70 group border-b">
                   <Link href={`/life/${entry.slug}`} className="flex gap-5 py-7 sm:gap-8">
@@ -38,43 +39,67 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline gap-3">
-                        <span
-                          aria-hidden
-                          className="inline-block h-[5px] w-[5px] shrink-0 translate-y-[-2px] rounded-full"
-                          style={{ background: tone }}
-                        />
+                        {locked ? (
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 16 16"
+                            className="text-dream-500/80 h-[13px] w-[13px] shrink-0 translate-y-[-1px]"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.3"
+                          >
+                            <rect x="4" y="7" width="8" height="6" rx="1.5" />
+                            <path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" />
+                          </svg>
+                        ) : (
+                          <span
+                            aria-hidden
+                            className="inline-block h-[5px] w-[5px] shrink-0 translate-y-[-2px] rounded-full"
+                            style={{ background: tone }}
+                          />
+                        )}
                         <h3 className="group-hover:text-dream-500 font-serif text-[17px] leading-snug transition-colors duration-300">
-                          {entry.title}
+                          {locked ? '朦胧的梦' : entry.title}
                         </h3>
                       </div>
 
-                      {entry.summary ? (
-                        <p className="text-ink-2 mt-2.5 line-clamp-2 text-[13px] leading-[1.95]">
-                          {entry.summary}
+                      {locked ? (
+                        <p className="text-ink-3 mt-2.5 text-[13px] leading-[1.95] tracking-[0.04em]">
+                          一个被「梦之钥」守护的梦
                         </p>
-                      ) : null}
+                      ) : (
+                        <>
+                          {entry.summary ? (
+                            <p className="text-ink-2 mt-2.5 line-clamp-2 text-[13px] leading-[1.95]">
+                              {entry.summary}
+                            </p>
+                          ) : null}
 
-                      <div className="text-ink-3 mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] tracking-[0.04em]">
-                        {entry.kind ? <span>{KIND_LABEL[entry.kind] ?? entry.kind}</span> : null}
-                        {entry.mood ? (
-                          <>
-                            <span className="opacity-40">·</span>
-                            <span>{entry.mood}</span>
-                          </>
-                        ) : null}
-                        {entry.place ? (
-                          <>
-                            <span className="opacity-40">·</span>
-                            <span>{entry.place}</span>
-                          </>
-                        ) : null}
-                        {entry.weather ? (
-                          <>
-                            <span className="opacity-40">·</span>
-                            <span>{entry.weather}</span>
-                          </>
-                        ) : null}
-                      </div>
+                          <div className="text-ink-3 mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] tracking-[0.04em]">
+                            {entry.kind ? (
+                              <span>{KIND_LABEL[entry.kind] ?? entry.kind}</span>
+                            ) : null}
+                            {entry.mood ? (
+                              <>
+                                <span className="opacity-40">·</span>
+                                <span>{entry.mood}</span>
+                              </>
+                            ) : null}
+                            {entry.place ? (
+                              <>
+                                <span className="opacity-40">·</span>
+                                <span>{entry.place}</span>
+                              </>
+                            ) : null}
+                            {entry.weather ? (
+                              <>
+                                <span className="opacity-40">·</span>
+                                <span>{entry.weather}</span>
+                              </>
+                            ) : null}
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     <div className="text-ink-3 hidden shrink-0 items-center pt-1 transition-transform duration-300 group-hover:translate-x-1 sm:flex">

@@ -75,6 +75,7 @@ export const Life = defineDocumentType(() => ({
     kind: { type: 'string' },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     draft: { type: 'boolean' },
+    locked: { type: 'boolean' },
   },
   computedFields,
 }))
@@ -87,7 +88,7 @@ function createSearchIndex(allLives) {
   if (!target) return
 
   const docs = allLives
-    .filter((post) => !isProduction || post.draft !== true)
+    .filter((post) => (!isProduction || post.draft !== true) && post.locked !== true)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .map((post) => ({
       path: post.path,
@@ -106,7 +107,14 @@ export default makeSource({
   documentTypes: [Life],
   mdx: {
     cwd: root,
-    remarkPlugins: [remarkExtractFrontmatter, remarkGfm, remarkCodeTitles, remarkMath, remarkImgToJsx, remarkAlert],
+    remarkPlugins: [
+      remarkExtractFrontmatter,
+      remarkGfm,
+      remarkCodeTitles,
+      remarkMath,
+      remarkImgToJsx,
+      remarkAlert,
+    ],
     rehypePlugins: [
       rehypeSlug,
       [

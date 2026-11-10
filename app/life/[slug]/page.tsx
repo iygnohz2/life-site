@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from '@/components/Link'
 import SectionContainer from '@/components/SectionContainer'
+import LockGate from '@/components/LockGate'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { allLives } from 'contentlayer/generated'
@@ -25,12 +26,14 @@ export async function generateMetadata(props: {
   const { slug } = await props.params
   const post = getDoc(decodeURI(slug))
   if (!post) return
+  const title = post.locked ? '朦胧的梦' : post.title
+  const description = post.locked ? '一个被梦之钥守护的梦' : post.summary
   return {
-    title: post.title,
-    description: post.summary,
+    title,
+    description,
     openGraph: {
-      title: post.title,
-      description: post.summary,
+      title,
+      description,
       type: 'article',
       publishedTime: new Date(post.date).toISOString(),
     },
@@ -57,6 +60,38 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
   const prev = sorted[idx + 1]
   const next = sorted[idx - 1]
   const tone = (post.mood && MOOD_TONE[post.mood]) || 'var(--color-ink-3)'
+  const locked = post.locked === true
+
+  const content = (
+    <>
+      <h1 className="mt-6 text-[clamp(1.8rem,4.4vw,2.6rem)] leading-[1.35] font-normal tracking-[0.01em]">
+        {post.title}
+      </h1>
+
+      <div className="hairline mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 py-4">
+        <Meta label="心情" value={post.mood} />
+        <Meta label="天气" value={post.weather} />
+        <Meta label="地点" value={post.place} />
+      </div>
+
+      <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none leading-[2.05]">
+        <MDXLayoutRenderer code={(post as LifeDoc).body.code} components={components} />
+      </div>
+
+      {post.tags?.length ? (
+        <div className="mt-12 flex flex-wrap gap-2">
+          {post.tags.map((t) => (
+            <span
+              key={t}
+              className="border-line text-ink-3 rounded-full border px-3 py-1 text-[11.5px] tracking-[0.06em]"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </>
+  )
 
   return (
     <SectionContainer>
@@ -70,46 +105,23 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
 
         <div className="text-ink-3 flex items-center gap-3 text-[11.5px] tracking-[0.14em]">
           <span className="font-mono">{longDate(post.date)}</span>
-          <span
-            className="inline-block h-[5px] w-[5px] rounded-full"
-            style={{ background: tone }}
-          />
+          {!locked ? (
+            <span
+              className="inline-block h-[5px] w-[5px] rounded-full"
+              style={{ background: tone }}
+            />
+          ) : null}
           <span>{KIND_LABEL[post.kind ?? 'entry'] ?? '记录'}</span>
         </div>
 
-        <h1 className="mt-6 text-[clamp(1.8rem,4.4vw,2.6rem)] leading-[1.35] font-normal tracking-[0.01em]">
-          {post.title}
-        </h1>
-
-        <div className="hairline mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 py-4">
-          <Meta label="心情" value={post.mood} />
-          <Meta label="天气" value={post.weather} />
-          <Meta label="地点" value={post.place} />
-        </div>
-
-        <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none leading-[2.05]">
-          <MDXLayoutRenderer code={(post as LifeDoc).body.code} components={components} />
-        </div>
-
-        {post.tags?.length ? (
-          <div className="mt-12 flex flex-wrap gap-2">
-            {post.tags.map((t) => (
-              <span
-                key={t}
-                className="border-line text-ink-3 rounded-full border px-3 py-1 text-[11.5px] tracking-[0.06em]"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        ) : null}
+        {locked ? <LockGate>{content}</LockGate> : content}
 
         <nav className="hairline mt-16 grid gap-px sm:grid-cols-2">
           {prev ? (
             <Link href={`/life/${prev.slug}`} className="group py-6">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更早</div>
               <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
-                {prev.title}
+                {prev.locked ? '朦胧的梦' : prev.title}
               </div>
             </Link>
           ) : (
@@ -119,7 +131,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
             <Link href={`/life/${next.slug}`} className="group py-6 sm:text-right">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更新</div>
               <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
-                {next.title}
+                {next.locked ? '朦胧的梦' : next.title}
               </div>
             </Link>
           ) : (
