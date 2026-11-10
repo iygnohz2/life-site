@@ -6,6 +6,7 @@ export type LifeLike = {
   title: string
   date: string
   place?: string
+  locked?: boolean
 }
 
 export type PlaceEntry = {
@@ -13,6 +14,7 @@ export type PlaceEntry = {
   title: string
   date: string
   place: string
+  locked?: boolean
 }
 
 export type PlacePoint = {
@@ -94,6 +96,7 @@ export function getPlaces(lives: LifeLike[]): { points: PlacePoint[]; unknown: s
       title: life.title,
       date: life.date,
       place: life.place ?? city,
+      locked: life.locked === true,
     })
     if (life.date > point.latest) point.latest = life.date
   }

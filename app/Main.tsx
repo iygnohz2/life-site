@@ -3,8 +3,9 @@ import SectionContainer from '@/components/SectionContainer'
 import TodayLine from '@/components/TodayLine'
 import Drift from '@/components/Drift'
 import ScatterText from '@/components/ScatterText'
+import RecentEntries from '@/components/RecentEntries'
 import siteMetadata from '@/data/siteMetadata'
-import { shortDate, type LifeEntry } from '@/lib/life'
+import type { LifeEntry } from '@/lib/life'
 
 const entries = [
   {
@@ -147,25 +148,7 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
         </div>
 
         {latest.length ? (
-          <ul>
-            {latest.map((item) => (
-              <li key={item.slug}>
-                <Link href={`/life/${item.slug}`} className="group flex items-baseline gap-5 py-5">
-                  <span className="text-ink-3 w-11 shrink-0 font-mono text-[11px] tracking-[0.08em]">
-                    {shortDate(item.date)}
-                  </span>
-                  <span className="group-hover:text-dream-300 min-w-0 flex-1 truncate font-serif text-[15.5px] transition-colors duration-500">
-                    {item.title}
-                  </span>
-                  {item.mood ? (
-                    <span className="text-ink-3 shrink-0 text-[11px] tracking-[0.06em]">
-                      {item.mood}
-                    </span>
-                  ) : null}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <RecentEntries latest={latest} />
         ) : (
           <p className="text-ink-3 py-10 text-[12px] tracking-[0.08em]">还没有记录 —— 从今天开始</p>
         )}

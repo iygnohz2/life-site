@@ -34,7 +34,7 @@ const channel = (config, posts) => `<?xml version="1.0" encoding="UTF-8"?>
 
 const rss = () => {
   const published = allLives
-    .filter((post) => post.draft !== true)
+    .filter((post) => post.draft !== true && post.locked !== true)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
 
   if (!published.length) {

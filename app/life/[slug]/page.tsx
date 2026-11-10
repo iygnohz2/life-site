@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import Link from '@/components/Link'
 import SectionContainer from '@/components/SectionContainer'
 import LockGate from '@/components/LockGate'
+import DreamNavTitle from '@/components/DreamNavTitle'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { allLives } from 'contentlayer/generated'
@@ -121,7 +122,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
             <Link href={`/life/${prev.slug}`} className="group py-6">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更早</div>
               <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
-                {prev.locked ? '朦胧的梦' : prev.title}
+                <DreamNavTitle title={prev.title} locked={prev.locked} />
               </div>
             </Link>
           ) : (
@@ -131,7 +132,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
             <Link href={`/life/${next.slug}`} className="group py-6 sm:text-right">
               <div className="text-ink-3 text-[11px] tracking-[0.2em]">更新</div>
               <div className="group-hover:text-dream-500 mt-2 font-serif text-[15px] transition-colors">
-                {next.locked ? '朦胧的梦' : next.title}
+                <DreamNavTitle title={next.title} locked={next.locked} />
               </div>
             </Link>
           ) : (

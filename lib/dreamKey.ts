@@ -15,6 +15,9 @@ export async function verifyDreamKey(input: string): Promise<boolean> {
   return hex === dreamKey.hash
 }
 
+/** 解锁状态变化时广播的自定义事件名，供列表等组件实时刷新 */
+export const UNLOCK_EVENT = 'dream-unlocked-change'
+
 /** 当前会话是否已解锁（sessionStorage 记录，关标签页失效） */
 export function isUnlocked(): boolean {
   if (typeof window === 'undefined') return false
@@ -25,4 +28,5 @@ export function setUnlocked(value: boolean): void {
   if (typeof window === 'undefined') return
   if (value) window.sessionStorage.setItem(STORAGE_KEY, '1')
   else window.sessionStorage.removeItem(STORAGE_KEY)
+  window.dispatchEvent(new Event(UNLOCK_EVENT))
 }

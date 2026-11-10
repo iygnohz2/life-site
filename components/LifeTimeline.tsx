@@ -1,8 +1,12 @@
+'use client'
+
 import Link from '@/components/Link'
 import { groupByYear, shortDate, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
+import { useDreamUnlocked } from '@/components/useDreamUnlocked'
 
 export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
   const groups = groupByYear(entries)
+  const unlocked = useDreamUnlocked()
 
   return (
     <div>
@@ -29,7 +33,7 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
           <ul>
             {group.items.map((entry) => {
               const tone = (entry.mood && MOOD_TONE[entry.mood]) || 'var(--color-ink-3)'
-              const locked = entry.locked === true
+              const hidden = entry.locked === true && !unlocked
               return (
                 <li key={entry.slug} className="border-line/70 group border-b">
                   <Link href={`/life/${entry.slug}`} className="flex gap-5 py-7 sm:gap-8">
@@ -39,7 +43,7 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline gap-3">
-                        {locked ? (
+                        {hidden ? (
                           <svg
                             aria-hidden
                             viewBox="0 0 16 16"
@@ -59,11 +63,11 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
                           />
                         )}
                         <h3 className="group-hover:text-dream-500 font-serif text-[17px] leading-snug transition-colors duration-300">
-                          {locked ? '朦胧的梦' : entry.title}
+                          {hidden ? '朦胧的梦' : entry.title}
                         </h3>
                       </div>
 
-                      {locked ? (
+                      {hidden ? (
                         <p className="text-ink-3 mt-2.5 text-[13px] leading-[1.95] tracking-[0.04em]">
                           一个被「梦之钥」守护的梦
                         </p>

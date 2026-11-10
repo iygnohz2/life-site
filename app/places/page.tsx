@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from '@/components/Link'
 import PageHeader from '@/components/PageHeader'
 import FootprintMap from '@/components/FootprintMap'
+import PlaceEntryTitle from '@/components/PlaceEntryTitle'
 import { allLives } from 'contentlayer/generated'
 import type { LifeEntry } from '@/lib/life'
 import { getPlaces, type LifeLike } from '@/lib/places'
@@ -89,9 +90,7 @@ export default function PlacesPage() {
                             <span className="text-ink-3 font-mono text-[10.5px] tracking-[0.08em]">
                               {shortDate(entry.date)}
                             </span>
-                            <span className="group-hover:underline group-hover:underline-offset-4">
-                              {entry.title}
-                            </span>
+                            <PlaceEntryTitle title={entry.title} locked={entry.locked} />
                           </Link>
                         </li>
                       ))}
