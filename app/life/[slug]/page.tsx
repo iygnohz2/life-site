@@ -6,10 +6,11 @@ import Link from '@/components/Link'
 import SectionContainer from '@/components/SectionContainer'
 import LockGate from '@/components/LockGate'
 import DreamNavTitle from '@/components/DreamNavTitle'
+import Interactions from '@/components/Interactions'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { allLives } from 'contentlayer/generated'
-import { sortByDateDesc, longDate, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
+import { sortByDateDesc, longDateTime, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
 
 type LifeDoc = LifeEntry & { body: { code: string }; toc: unknown }
 
@@ -36,7 +37,7 @@ export async function generateMetadata(props: {
       title,
       description,
       type: 'article',
-      publishedTime: new Date(post.date).toISOString(),
+      publishedTime: new Date(post.date.replace(' ', 'T')).toISOString(),
     },
   }
 }
@@ -105,7 +106,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
         </Link>
 
         <div className="text-ink-3 flex items-center gap-3 text-[11.5px] tracking-[0.14em]">
-          <span className="font-mono">{longDate(post.date)}</span>
+          <span className="font-mono">{longDateTime(post.date)}</span>
           {!locked ? (
             <span
               className="inline-block h-[5px] w-[5px] rounded-full"
@@ -116,6 +117,8 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
         </div>
 
         {locked ? <LockGate>{content}</LockGate> : content}
+
+        <Interactions targetType="diary" targetId={post.slug} />
 
         <nav className="hairline mt-16 grid gap-px sm:grid-cols-2">
           {prev ? (

@@ -3,6 +3,7 @@ import Link from '@/components/Link'
 import PageHeader from '@/components/PageHeader'
 import FootprintMap from '@/components/FootprintMap'
 import PlaceEntryTitle from '@/components/PlaceEntryTitle'
+import Interactions from '@/components/Interactions'
 import { allLives } from 'contentlayer/generated'
 import type { LifeEntry } from '@/lib/life'
 import { getPlaces, type LifeLike } from '@/lib/places'
@@ -96,6 +97,12 @@ export default function PlacesPage() {
                       ))}
                     </ul>
                   ) : null}
+
+                  <Interactions
+                    targetType="place"
+                    targetId={point.city}
+                    className="hairline mt-6 pt-6"
+                  />
                 </li>
               ))}
             </ul>

@@ -4,6 +4,7 @@ const headerNavLinks = [
   { href: '/photos', title: '相册' },
   { href: '/places', title: '足迹' },
   { href: '/books', title: '书架' },
+  { href: '/messages', title: '私信' },
   { href: '/about', title: '关于' },
 ]
 

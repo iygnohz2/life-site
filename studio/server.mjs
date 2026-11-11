@@ -67,8 +67,9 @@ const wrap = (fn) => (req, res) => {
 
 function toDateString(value) {
   if (!value) return ''
+  // 旧数据（无引号 date）会被 YAML 解析成 Date 对象；新数据是「YYYY-MM-DD」或「YYYY-MM-DD HH:mm」字符串
   if (value instanceof Date) return value.toISOString().slice(0, 10)
-  return String(value).slice(0, 10)
+  return String(value).trim()
 }
 
 function listPosts() {
@@ -128,8 +129,10 @@ function uniqueSlug(base) {
 function savePost(input) {
   const title = (input.title || '').trim()
   if (!title) throw new Error('标题不能为空')
-  const date = input.date || new Date().toISOString().slice(0, 10)
-  const slug = input.slug || uniqueSlug(`${date}-${slugify(title)}`)
+  const datePart = input.date || new Date().toISOString().slice(0, 10)
+  const timePart = input.time ? String(input.time).trim() : ''
+  const date = timePart ? `${datePart} ${timePart}` : datePart
+  const slug = input.slug || uniqueSlug(`${datePart}-${slugify(title)}`)
 
   const data = {
     title,
@@ -145,7 +148,8 @@ function savePost(input) {
 
   const out = matter
     .stringify(`\n${input.body || ''}\n`, data)
-    .replace(/^date: '(\d{4}-\d{2}-\d{2})'$/m, 'date: $1')
+    // 强制 date 写成带引号的字符串，避免 YAML 把日期解析成 Date（时区偏移 / contentlayer string 类型）
+    .replace(/^date:.*$/m, `date: '${date}'`)
 
   const file = writeSafe(path.join(LIFE_DIR, `${slug}.mdx`), out)
   return { slug, file: path.relative(ROOT, file) }
@@ -510,7 +514,12 @@ async function startSite() {
 
   const child = spawn(
     process.execPath,
-    [path.join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'), 'dev', '-p', String(SITE_PORT)],
+    [
+      path.join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'),
+      'dev',
+      '-p',
+      String(SITE_PORT),
+    ],
     { cwd: ROOT, env: { ...process.env, NODE_NO_WARNINGS: '1' }, windowsHide: true }
   )
 
@@ -555,15 +564,24 @@ async function stopSite(force = false) {
 
 // ---------- 路由 ----------
 
-app.get('/api/state', wrap(async () => ({ site: await siteState(), overview: overview() })))
-app.get('/api/overview', wrap(() => overview()))
+app.get(
+  '/api/state',
+  wrap(async () => ({ site: await siteState(), overview: overview() }))
+)
+app.get(
+  '/api/overview',
+  wrap(() => overview())
+)
 
 app.get('/api/posts', (req, res, next) => {
   const slug = req.query.slug
   wrap(() => (slug ? readPost(String(slug)) : listPosts()))(req, res, next)
 })
 
-app.post('/api/posts', wrap((req) => savePost(req.body)))
+app.post(
+  '/api/posts',
+  wrap((req) => savePost(req.body))
+)
 
 app.delete('/api/posts', (req, res, next) => {
   const slug = String(req.query.slug || '')
@@ -577,7 +595,10 @@ app.delete('/api/posts', (req, res, next) => {
   })(req, res, next)
 })
 
-app.get('/api/photos', wrap(() => listPhotos()))
+app.get(
+  '/api/photos',
+  wrap(() => listPhotos())
+)
 
 app.post('/api/photos', upload.single('file'), (req, res, next) => {
   wrap(async () => {
@@ -586,31 +607,69 @@ app.post('/api/photos', upload.single('file'), (req, res, next) => {
   })(req, res, next)
 })
 
-app.patch('/api/photos', wrap((req) => savePhotoMeta(req.body.name, {
-  caption: req.body.caption,
-  place: req.body.place,
-})))
+app.patch(
+  '/api/photos',
+  wrap((req) =>
+    savePhotoMeta(req.body.name, {
+      caption: req.body.caption,
+      place: req.body.place,
+    })
+  )
+)
 
 app.delete('/api/photos', (req, res, next) => {
   const name = String(req.query.name || '')
   wrap(() => deletePhoto(name))(req, res, next)
 })
 
-app.get('/api/books', wrap(() => readBooks()))
-app.post('/api/books', wrap((req) => writeBooks(req.body?.books ?? [])))
+app.get(
+  '/api/books',
+  wrap(() => readBooks())
+)
+app.post(
+  '/api/books',
+  wrap((req) => writeBooks(req.body?.books ?? []))
+)
 
-app.get('/api/places', wrap(() => readPlaces()))
-app.post('/api/places', wrap((req) => writeTrips(req.body?.trips ?? [])))
+app.get(
+  '/api/places',
+  wrap(() => readPlaces())
+)
+app.post(
+  '/api/places',
+  wrap((req) => writeTrips(req.body?.trips ?? []))
+)
 
-app.get('/api/dream-key', wrap(() => ({ configured: Boolean(readDreamKey()) })))
-app.post('/api/dream-key', wrap((req) => setDreamKey(req.body?.password)))
+app.get(
+  '/api/dream-key',
+  wrap(() => ({ configured: Boolean(readDreamKey()) }))
+)
+app.post(
+  '/api/dream-key',
+  wrap((req) => setDreamKey(req.body?.password))
+)
 
-app.get('/api/git', wrap(() => gitStatus()))
-app.post('/api/git', wrap((req) => publish(req.body?.message)))
+app.get(
+  '/api/git',
+  wrap(() => gitStatus())
+)
+app.post(
+  '/api/git',
+  wrap((req) => publish(req.body?.message))
+)
 
-app.get('/api/site', wrap(() => siteState()))
-app.post('/api/site/start', wrap(() => startSite()))
-app.post('/api/site/stop', wrap((req) => stopSite(req.body?.force === true)))
+app.get(
+  '/api/site',
+  wrap(() => siteState())
+)
+app.post(
+  '/api/site/start',
+  wrap(() => startSite())
+)
+app.post(
+  '/api/site/stop',
+  wrap((req) => stopSite(req.body?.force === true))
+)
 
 // 只监听本机，局域网也访问不到
 app.listen(PORT, '127.0.0.1', () => {

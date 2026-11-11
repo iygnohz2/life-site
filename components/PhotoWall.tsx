@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import type { Photo } from '@/lib/photos'
+import Interactions from '@/components/Interactions'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -70,6 +71,8 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
       if (e.key === 'Escape') close()
       else if (e.key === 'ArrowRight') step(1)
       else if (e.key === 'ArrowLeft') step(-1)
@@ -267,7 +270,7 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
               </button>
             </div>
 
-            <div className="px-6 pb-8 text-center sm:pb-10">
+            <div className="pointer-events-auto max-h-[42vh] overflow-y-auto px-6 pb-8 text-center sm:pb-10">
               {current.caption ? (
                 <p className="font-serif text-[15px] tracking-[0.04em] text-white/90">
                   {current.caption}
@@ -277,6 +280,13 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
                 {current.date}
                 {current.place ? ` · ${current.place}` : ''}
               </p>
+              <div className="text-left">
+                <Interactions
+                  targetType="photo"
+                  targetId={current.slug}
+                  className="hairline mt-6 pt-6"
+                />
+              </div>
             </div>
           </div>
         </div>

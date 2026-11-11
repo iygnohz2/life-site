@@ -1,7 +1,7 @@
 'use client'
 
 import Link from '@/components/Link'
-import { groupByYear, shortDate, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
+import { groupByYear, shortDateTime, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
 import { useDreamUnlocked } from '@/components/useDreamUnlocked'
 
 export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
@@ -38,7 +38,7 @@ export default function LifeTimeline({ entries }: { entries: LifeEntry[] }) {
                 <li key={entry.slug} className="border-line/70 group border-b">
                   <Link href={`/life/${entry.slug}`} className="flex gap-5 py-7 sm:gap-8">
                     <div className="text-ink-3 w-12 shrink-0 pt-[6px] font-mono text-[11.5px] tracking-[0.08em] sm:w-14">
-                      {shortDate(entry.date)}
+                      {shortDateTime(entry.date)}
                     </div>
 
                     <div className="min-w-0 flex-1">

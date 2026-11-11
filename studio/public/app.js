@@ -170,6 +170,7 @@ $('post-picker').addEventListener('change', async (e) => {
   if (!slug) {
     $('f-title').value = ''
     $('f-date').value = new Date().toISOString().slice(0, 10)
+    $('f-time').value = nowTime()
     $('f-body').value = ''
     $('f-mood').value = ''
     $('f-weather').value = ''
@@ -182,8 +183,10 @@ $('post-picker').addEventListener('change', async (e) => {
   }
   const post = await api('/api/posts?slug=' + encodeURIComponent(slug))
   const fm = post.frontmatter
+  const dt = splitDateTime(fm.date)
   $('f-title').value = fm.title || ''
-  $('f-date').value = String(fm.date || '').slice(0, 10)
+  $('f-date').value = dt.date
+  $('f-time').value = dt.time
   $('f-mood').value = fm.mood || ''
   $('f-weather').value = fm.weather || ''
   $('f-place').value = fm.place || ''
@@ -207,6 +210,7 @@ async function savePost(draft) {
         slug: currentSlug || undefined,
         title: $('f-title').value,
         date: $('f-date').value,
+        time: $('f-time').value,
         mood: $('f-mood').value,
         weather: $('f-weather').value,
         place: $('f-place').value,
@@ -559,10 +563,24 @@ function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
 }
 
+/** 当前本地时分（HH:mm） */
+function nowTime() {
+  const d = new Date()
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+}
+
+/** 把「YYYY-MM-DD」或「YYYY-MM-DD HH:mm」拆成日期与时间两部分 */
+function splitDateTime(s) {
+  const str = String(s || '').trim()
+  const m = str.match(/^(\d{4}-\d{2}-\d{2})(?:[T\s](\d{2}:\d{2}))?/)
+  return { date: m ? m[1] : '', time: m && m[2] ? m[2] : '' }
+}
+
 /* ---------- 启动 ---------- */
 
 ;(async function boot() {
   $('f-date').value = new Date().toISOString().slice(0, 10)
+  $('f-time').value = nowTime()
   const s = await loadSite()
   if (s) window.__sitePort = s.port
   loadOverview()

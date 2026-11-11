@@ -65,7 +65,9 @@ export const Life = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
-    date: { type: 'date', required: true },
+    // 用 string 而非 date：date 支持「YYYY-MM-DD」或「YYYY-MM-DD HH:mm」，
+    // 避免 contentlayer 的 date 类型在构建端(UTC)做时区转换导致时分偏移 8 小时。
+    date: { type: 'string', required: true },
     summary: { type: 'string' },
     mood: { type: 'string' },
     weather: { type: 'string' },
@@ -89,7 +91,7 @@ function createSearchIndex(allLives) {
 
   const docs = allLives
     .filter((post) => (!isProduction || post.draft !== true) && post.locked !== true)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)))
     .map((post) => ({
       path: post.path,
       title: post.title,

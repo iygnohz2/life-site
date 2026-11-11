@@ -48,27 +48,60 @@ const MONTH_CN = [
 ]
 
 export function sortByDateDesc<T extends { date: string }>(list: T[]): T[] {
-  return [...list].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  // date 为「YYYY-MM-DD」或「YYYY-MM-DD HH:mm」固定宽度格式，字典序即时间序，避免 Date 时区偏移
+  return [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)))
 }
 
+/**
+ * 用正则解析日期字符串，避免依赖 new Date 的时区行为。
+ * 支持「YYYY-MM-DD」和「YYYY-MM-DD HH:mm」（也兼容 ISO 的 T 分隔）。
+ */
 export function partsOf(date: string) {
-  const d = new Date(date)
-  return {
-    year: d.getFullYear(),
-    month: d.getMonth() + 1,
-    day: d.getDate(),
-    monthCn: MONTH_CN[d.getMonth()],
+  const m = String(date || '').match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2}))?/)
+  if (!m) {
+    // 兜底：无法按规范格式解析时退回 Date（仅用于异常数据）
+    const d = new Date(date)
+    return {
+      year: d.getFullYear(),
+      month: d.getMonth() + 1,
+      day: d.getDate(),
+      hour: null as number | null,
+      minute: null as number | null,
+      monthCn: MONTH_CN[d.getMonth()],
+    }
   }
+  const year = Number(m[1])
+  const month = Number(m[2])
+  const day = Number(m[3])
+  const hour = m[4] != null ? Number(m[4]) : null
+  const minute = m[5] != null ? Number(m[5]) : null
+  return { year, month, day, hour, minute, monthCn: MONTH_CN[month - 1] }
 }
+
+const pad2 = (n: number) => String(n).padStart(2, '0')
 
 export function shortDate(date: string) {
   const { month, day } = partsOf(date)
-  return `${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`
+  return `${pad2(month)}.${pad2(day)}`
+}
+
+/** 生活流列表用：有时分显示「MM.DD HH:mm」，纯日期只显示「MM.DD」 */
+export function shortDateTime(date: string) {
+  const p = partsOf(date)
+  const base = `${pad2(p.month)}.${pad2(p.day)}`
+  return p.hour == null ? base : `${base} ${pad2(p.hour)}:${pad2(p.minute ?? 0)}`
 }
 
 export function longDate(date: string) {
   const { year, monthCn, day } = partsOf(date)
   return `${year} 年 ${monthCn} ${day} 日`
+}
+
+/** 详情页用：有时分显示「YYYY 年 X 月 D 日 HH:mm」，纯日期只显示日期 */
+export function longDateTime(date: string) {
+  const p = partsOf(date)
+  const base = `${p.year} 年 ${p.monthCn} ${p.day} 日`
+  return p.hour == null ? base : `${base} ${pad2(p.hour)}:${pad2(p.minute ?? 0)}`
 }
 
 export function groupByYear<T extends { date: string }>(list: T[]) {
