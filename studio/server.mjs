@@ -347,7 +347,7 @@ function overview() {
 // ---------- git ----------
 
 async function gitStatus() {
-  const { stdout } = await run('git', ['status', '--porcelain=v1', '-uno'], { cwd: ROOT })
+  const { stdout } = await run('git', ['status', '--porcelain=v1'], { cwd: ROOT })
   const files = stdout
     .split('\n')
     .filter(Boolean)
