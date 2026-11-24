@@ -23,7 +23,11 @@ export default function RecentEntries({ latest }: { latest: LifeEntry[] }) {
         const hidden = item.locked === true && !unlocked
         return (
           <li key={item.slug}>
-            <Link href={`/life/${item.slug}`} className="group flex items-baseline gap-5 py-5">
+            <Link
+              href={`/life/${item.slug}`}
+              className="group ink-host flex items-baseline gap-5 py-5"
+            >
+              <span aria-hidden className="ink-blob" />
               <span className="text-ink-3 w-11 shrink-0 font-mono text-[11px] tracking-[0.08em]">
                 {shortDate(item.date)}
               </span>

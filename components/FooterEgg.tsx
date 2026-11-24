@@ -94,7 +94,7 @@ export default function FooterEgg({ memories }: { memories: Memory[] }) {
             type="button"
             aria-label="关闭"
             onClick={() => setOpened(false)}
-            className="absolute inset-0 bg-[#080706]/72 backdrop-blur-[3px]"
+            className="absolute inset-0 bg-[#05070d]/72 backdrop-blur-[3px]"
             style={{ animation: 'fadeIn .25s ease both' }}
           />
 

@@ -36,7 +36,7 @@ export default function ScrollProgress() {
       <div
         ref={bar}
         className="bg-dream-500 h-px w-full origin-left"
-        style={{ transform: 'scaleX(0)' }}
+        style={{ transform: 'scaleX(0)', boxShadow: '0 0 10px var(--color-dream-500)' }}
       />
     </div>
   )

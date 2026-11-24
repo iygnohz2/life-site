@@ -5,9 +5,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================================
-   设计系统 · DreamLand / 显影
-   凌晨四点的天光：偏蓝的暮色，不是纯黑也不是紫
-   一切都在「还没显影完」的状态 —— 无硬边框，只有溶解的边缘
+   设计系统 · DreamLand / 氤氲克莱因蓝
+   International Klein Blue（#002FA7）：深邃饱和、会发光的蓝
+   一切浸在蓝色的薄雾里 —— 无硬边框，只有溶解的蓝色边缘
    ============================================================ */
 @theme {
   --font-sans:
@@ -17,42 +17,42 @@
     'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* 暮色与骨白 */
-  --color-paper: #0d1116;
-  --color-surface: #151a21;
-  --color-ink: #e9e6e1;
-  --color-ink-2: #9aa2ae;
-  --color-ink-3: #7e8792;
-  --color-line: #1e242c;
+  /* 深蓝夜色与冷白 */
+  --color-paper: #070b18;
+  --color-surface: #0c1224;
+  --color-ink: #e8edf7;
+  --color-ink-2: #93a0b8;
+  --color-ink-3: #64718c;
+  --color-line: #18213a;
 
-  /* 月光蓝（主强调，全站用得极少）—— 默认按暗底取值 */
-  --color-dream-50: #eef2f9;
-  --color-dream-100: #dde5f2;
-  --color-dream-200: #c8d6ec;
-  --color-dream-300: #cfdcef;
-  --color-dream-400: #b6c7e2;
-  --color-dream-500: #9db0d2;
-  --color-dream-600: #8498bd;
-  --color-dream-700: #455573;
-  --color-dream-800: #2f3b52;
-  --color-dream-900: #1c2434;
+  /* 克莱因蓝（International Klein Blue · IKB #002FA7）—— 主强调 */
+  --color-dream-50: #eaf0ff;
+  --color-dream-100: #d3deff;
+  --color-dream-200: #aec3ff;
+  --color-dream-300: #86a5ff;
+  --color-dream-400: #5e81ff;
+  --color-dream-500: #2f56e8;
+  --color-dream-600: #002fa7;
+  --color-dream-700: #00247e;
+  --color-dream-800: #00195c;
+  --color-dream-900: #001140;
 
-  /* 渗青（次强调） */
-  --color-mist-300: #b2cdc7;
-  --color-mist-500: #8fb0a8;
-  --color-mist-700: #6b8c85;
+  /* 青蓝氤氲（次强调） */
+  --color-mist-300: #a8c6e0;
+  --color-mist-500: #79a3c9;
+  --color-mist-700: #527ba0;
 
-  --color-primary-50: #eef2f9;
-  --color-primary-100: #dde5f2;
-  --color-primary-200: #c8d6ec;
-  --color-primary-300: #a3b7d8;
-  --color-primary-400: #8ca3c9;
-  --color-primary-500: #7289b3;
-  --color-primary-600: #5a6e96;
-  --color-primary-700: #455573;
-  --color-primary-800: #2f3b52;
-  --color-primary-900: #1c2434;
-  --color-primary-950: #131a26;
+  --color-primary-50: #eaf0ff;
+  --color-primary-100: #d3deff;
+  --color-primary-200: #aec3ff;
+  --color-primary-300: #86a5ff;
+  --color-primary-400: #5e81ff;
+  --color-primary-500: #2f56e8;
+  --color-primary-600: #002fa7;
+  --color-primary-700: #00247e;
+  --color-primary-800: #00195c;
+  --color-primary-900: #001140;
+  --color-primary-950: #000b28;
 
   --line-height-11: 2.75rem;
   --line-height-12: 3rem;
@@ -69,31 +69,31 @@
 /* 浅色 = 显影过度：乳白灰，像晒白了的照片。
    只在 html.light 下生效 —— 没有类时一律按暗色渲染，避免首屏闪白。 */
 html.light {
-  --color-paper: #ededef;
-  --color-surface: #f7f7f8;
-  --color-ink: #171a20;
-  --color-ink-2: #4e545e;
-  --color-ink-3: #7f858e;
-  --color-line: #dcdde1;
+  --color-paper: #eef1f7;
+  --color-surface: #f6f8fb;
+  --color-ink: #111527;
+  --color-ink-2: #47506a;
+  --color-ink-3: #7a8494;
+  --color-line: #d4dae8;
 
-  --color-dream-300: #7f96bd;
-  --color-dream-400: #6d84ad;
-  --color-dream-500: #5d739c;
-  --color-dream-600: #4a5c80;
-  --color-mist-300: #7fa098;
-  --color-mist-500: #5f8079;
-  --color-mist-700: #4a6a63;
+  --color-dream-300: #5e81ff;
+  --color-dream-400: #2f56e8;
+  --color-dream-500: #002fa7;
+  --color-dream-600: #00237d;
+  --color-mist-300: #6f9ac2;
+  --color-mist-500: #4a79a5;
+  --color-mist-700: #355f87;
 }
 
-/* 天光：从上方漏下来的一点冷光，越往下越暗（默认按暗底取值） */
+/* 天光：从上方漏下来的一点克莱因蓝，越往下越暗（默认按暗底取值） */
 :root {
-  --sky: rgba(120, 145, 190, 0.12);
-  --sky-hi: rgba(180, 200, 232, 0.1);
+  --sky: rgba(47, 86, 232, 0.17);
+  --sky-hi: rgba(134, 165, 255, 0.14);
 }
 
 html.light {
-  --sky: rgba(140, 163, 201, 0.1);
-  --sky-hi: rgba(200, 214, 236, 0.14);
+  --sky: rgba(0, 47, 167, 0.08);
+  --sky-hi: rgba(94, 129, 255, 0.12);
 }
 
 @layer base {
@@ -166,8 +166,9 @@ html.light {
     inset: 0;
     z-index: -1;
     transform: translate(1.5px, -1.5px);
-    opacity: 0.34;
+    opacity: 0.38;
     color: var(--color-dream-400);
+    text-shadow: 0 0 12px color-mix(in oklab, var(--color-dream-500) 55%, transparent);
     filter: blur(0.4px);
     pointer-events: none;
     user-select: none;
@@ -244,6 +245,52 @@ html.light {
     border-top: 1px solid var(--color-line);
   }
 
+  /* 克莱因蓝辉光：IKB 是「会发光的颜料」，给关键强调元素一层冷蓝光晕 */
+  .ikb-glow {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-dream-500) 32%, transparent),
+      0 0 26px color-mix(in oklab, var(--color-dream-500) 26%, transparent);
+  }
+
+  /* 文字辉光：标题/强调字用，像霓虹蓝雾在字边晕开 */
+  .ikb-text-glow {
+    text-shadow: 0 0 18px color-mix(in oklab, var(--color-dream-500) 55%, transparent);
+  }
+
+  /* IKB 颜料晕染：悬停时克莱因蓝像一滴墨在水里晕开。
+     引用全局 SVG 滤镜 #ikb-ink（见 app/layout.tsx）做湍流有机边缘。 */
+  .ink-host {
+    position: relative;
+    z-index: 0;
+  }
+  .ink-blob {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: -1;
+    width: clamp(220px, 30vw, 360px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in oklab, var(--color-dream-400) 52%, transparent) 0%,
+      color-mix(in oklab, var(--color-dream-400) 20%, transparent) 52%,
+      transparent 74%
+    );
+    filter: url(#ikb-ink);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ink-host:hover .ink-blob,
+  .ink-host:focus-within .ink-blob {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.34);
+  }
+
   .eyebrow {
     font-size: 11px;
     letter-spacing: 0.28em;
@@ -262,7 +309,10 @@ html.light {
     bottom: -3px;
     height: 1px;
     width: 0;
-    background: var(--color-dream-500);
+    background: var(--color-dream-400);
+    box-shadow:
+      0 0 12px var(--color-dream-400),
+      0 0 26px color-mix(in oklab, var(--color-dream-400) 60%, transparent);
     transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .ul-grow:hover::after,
@@ -612,4 +662,35 @@ input:-webkit-autofill:focus {
 .linkicon {
   display: inline-block;
   vertical-align: middle;
+}
+
+/* 滚动显影：正文内容段随滚动进入视口时逐段「对焦」。
+   只对支持 scroll-driven 动画的浏览器生效（Chrome/Safari），其余优雅降级为常显。 */
+@supports (animation-timeline: view()) {
+  .scroll-reveal,
+  .prose > :is(p, h2, h3, h4, figure, blockquote, ul, ol, pre, table) {
+    animation: scrollReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 32%;
+  }
+
+  @keyframes scrollReveal {
+    from {
+      opacity: 0;
+      transform: translateY(26px);
+      filter: blur(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .prose > :is(p, h2, h3, h4, figure, blockquote, ul, ol, pre, table) {
+    animation: none !important;
+  }
 }

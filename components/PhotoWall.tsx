@@ -206,7 +206,7 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
           role="dialog"
           aria-modal="true"
           aria-label="照片查看"
-          className="fixed inset-0 z-80 bg-[#0b0a09]/94 backdrop-blur-sm"
+          className="fixed inset-0 z-80 bg-[#05070d]/94 backdrop-blur-sm"
           style={{ animation: 'fadeIn .22s ease both' }}
         >
           <button

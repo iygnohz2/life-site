@@ -9,6 +9,9 @@ import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Ambient from '@/components/Ambient'
+import CursorTrail from '@/components/CursorTrail'
+import Spotlight from '@/components/Spotlight'
+import TimeTint from '@/components/TimeTint'
 import ScrollProgress from '@/components/ScrollProgress'
 import MusicPlayer from '@/components/MusicPlayer'
 import { getTracks } from '@/lib/music.server'
@@ -68,13 +71,37 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         href={`${basePath}/static/favicons/favicon-16x16.png`}
       />
       <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ededef" />
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1116" />
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef1f7" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#070b18" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
       <body className="text-ink font-sans antialiased">
+        {/* IKB 颜料晕染：全局 SVG 湍流滤镜，供 .ink-blob 引用做有机边缘 */}
+        <svg aria-hidden className="absolute h-0 w-0" focusable="false">
+          <defs>
+            <filter id="ikb-ink" x="-60%" y="-60%" width="220%" height="220%">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.012 0.02"
+                numOctaves="3"
+                seed="7"
+                result="n"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="n"
+                scale="34"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
+            </filter>
+          </defs>
+        </svg>
         <ThemeProviders>
           <Ambient />
+          <CursorTrail />
+          <Spotlight />
           <ScrollProgress />
+          <TimeTint />
           <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
             <div className="flex min-h-screen flex-col">
               <Header />

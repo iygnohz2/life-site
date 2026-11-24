@@ -96,7 +96,7 @@ export default function Bookshelf({ books }: { books: Book[] }) {
                     />
 
                     <span className="absolute inset-0 flex items-center justify-center px-1">
-                      <span className="font-serif text-[13.5px] leading-none tracking-[0.16em] whitespace-nowrap text-[#f3ece1] [writing-mode:vertical-rl]">
+                      <span className="font-serif text-[13.5px] leading-none tracking-[0.16em] whitespace-nowrap text-[#e8edf7] [writing-mode:vertical-rl]">
                         {book.title}
                       </span>
                     </span>
@@ -134,7 +134,7 @@ export default function Bookshelf({ books }: { books: Book[] }) {
             type="button"
             aria-label="关闭"
             onClick={() => setSelected(null)}
-            className="absolute inset-0 bg-[#080706]/72 backdrop-blur-[3px]"
+            className="absolute inset-0 bg-[#05070d]/72 backdrop-blur-[3px]"
             style={{ animation: 'fadeIn .22s ease both' }}
           />
 

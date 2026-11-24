@@ -121,7 +121,8 @@ export default function Home({ latest = [] }: { latest?: LifeEntry[] }) {
       <nav className="entries -mt-2" aria-label="站点入口">
         {entries.map((e) => (
           <Drift key={e.href} speed={e.speed} className="will-change-transform">
-            <Link href={e.href} className={`entry block pb-5 ${e.pad} ${e.gap}`}>
+            <Link href={e.href} className={`entry ink-host block pb-5 ${e.pad} ${e.gap}`}>
+              <span aria-hidden className="ink-blob" />
               <span
                 className={`ghost inline-block font-serif tracking-[0.14em] ${e.size}`}
                 data-ghost={e.title}

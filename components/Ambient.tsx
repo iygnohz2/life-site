@@ -84,10 +84,13 @@ export default function Ambient() {
     let start = performance.now()
     let lastFrame = 0
     let pausedAt = 0
+    // 光标唤醒：静止时雾变浓、一动就醒（fogBoost 0→1 平滑过渡）
+    let fogBoost = 0
+    let lastMoveAt = performance.now()
 
     const colors: { dream: RGB; mist: RGB } = {
-      dream: [157, 176, 210],
-      mist: [143, 176, 168],
+      dream: [47, 86, 232],
+      mist: [121, 163, 201],
     }
     const veilSize = 512
     // 雾的流动速度系数（微调入口：调大=更快，调小=更慢）
@@ -221,12 +224,16 @@ export default function Ambient() {
 
     function draw(now: number) {
       const t = (now - start) / 1000
+      // 光标唤醒：静止超过 4s 起雾，8s 后达最浓；移动即回落
+      const idle = (now - lastMoveAt) / 1000
+      const targetBoost = idle > 4 ? Math.min(1, (idle - 4) / 5) : 0
+      fogBoost += (targetBoost - fogBoost) * 0.04
       c2d.clearRect(0, 0, w, h)
 
       // 1. 雾纱：整体缓慢漂移 + 极慢旋转
       if (veilPattern) {
         c2d.save()
-        c2d.globalAlpha = 0.06
+        c2d.globalAlpha = 0.06 * (1 + fogBoost * 0.6)
         const ox = (t * 6 * speed) % veilSize
         const oy = (t * 4 * speed) % veilSize
         c2d.translate(w / 2, h / 2)
@@ -241,7 +248,14 @@ export default function Ambient() {
       for (const b of bands) {
         const x = b.bx * w + b.ax * Math.sin(t * b.sx + b.px)
         const y = b.by * h
-        drawEllipse(x, y, b.rx, b.ry, b.c === 0 ? colors.dream : colors.mist, b.alpha)
+        drawEllipse(
+          x,
+          y,
+          b.rx,
+          b.ry,
+          b.c === 0 ? colors.dream : colors.mist,
+          b.alpha * (1 + fogBoost * 0.5)
+        )
       }
 
       // 3. 大气雾团：Lissajous 漂移 + 明暗/大小起伏
@@ -249,7 +263,7 @@ export default function Ambient() {
         const x = b.bx * w + b.ax * Math.sin(t * b.sx + b.px)
         const y = b.by * h + b.ay * Math.sin(t * b.sy + b.py)
         const r = b.br * (1 + 0.1 * Math.sin(t * b.sr + b.pr))
-        const a = b.alpha * (1 + 0.28 * Math.sin(t * b.sa + b.pa))
+        const a = b.alpha * (1 + 0.28 * Math.sin(t * b.sa + b.pa)) * (1 + fogBoost * 0.5)
         drawBlob(x, y, r, b.c === 0 ? colors.dream : colors.mist, a)
       }
     }
@@ -304,6 +318,7 @@ export default function Ambient() {
     const onMove = (e: MouseEvent) => {
       tx = e.clientX
       ty = e.clientY
+      lastMoveAt = performance.now()
     }
     const glowLoop = () => {
       cx += (tx - cx) * 0.035
