@@ -129,6 +129,15 @@
             </div>
           </div>
 
+          <div class="field wide post-photos-wrap">
+            <label class="cap">附照片（会同步到相册）</label>
+            <div class="post-photos" id="post-photos"></div>
+            <div class="drop small" id="post-drop">
+              <p id="post-drop-text">把照片拖到这里，或点击添加</p>
+              <input type="file" id="post-file" accept="image/*" multiple hidden />
+            </div>
+          </div>
+
           <div class="actions">
             <button class="btn primary" id="save">保存</button>
             <button class="btn" id="save-draft">存为草稿</button>
@@ -140,13 +149,7 @@
         <section class="panel" id="panel-photos">
           <p class="eyebrow">PHOTOS</p>
           <h1>照片</h1>
-
-          <div class="drop" id="drop">
-            <p id="drop-text">把照片拖到这里，或点击选择</p>
-            <small>自动压到长边 1600 / 质量 82 · 文件名请用 2026-11-05-短名.jpg</small>
-            <input type="file" id="file" accept="image/*" multiple hidden />
-          </div>
-          <div class="list" id="upload-log"></div>
+          <p class="sub">照片请在「写日记」里附上，这里统一管理说明文字、地点和删除。</p>
 
           <h2 class="section-title" id="photo-count">已有照片</h2>
           <div class="gallery" id="gallery"></div>

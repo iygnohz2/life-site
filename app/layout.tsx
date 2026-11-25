@@ -10,7 +10,6 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Ambient from '@/components/Ambient'
 import CursorTrail from '@/components/CursorTrail'
-import Spotlight from '@/components/Spotlight'
 import TimeTint from '@/components/TimeTint'
 import ScrollProgress from '@/components/ScrollProgress'
 import MusicPlayer from '@/components/MusicPlayer'
@@ -99,7 +98,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviders>
           <Ambient />
           <CursorTrail />
-          <Spotlight />
           <ScrollProgress />
           <TimeTint />
           <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>

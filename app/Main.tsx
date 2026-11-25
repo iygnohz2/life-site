@@ -10,7 +10,7 @@ import type { LifeEntry } from '@/lib/life'
 const entries = [
   {
     href: '/life',
-    speed: 0.05,
+    speed: 0.09,
     title: '生活流',
     desc: '按时间读的日子，好天气和坏心情都算数。',
     pad: 'sm:pl-0',
@@ -19,7 +19,7 @@ const entries = [
   },
   {
     href: '/photos',
-    speed: 0.14,
+    speed: 0.22,
     title: '相册',
     desc: '被留下来的光。没有主题，只有当时想按快门。',
     pad: 'sm:pl-20',
@@ -28,7 +28,7 @@ const entries = [
   },
   {
     href: '/places',
-    speed: 0.08,
+    speed: 0.13,
     title: '足迹',
     desc: '去过的地方，和在那里发生的小事。',
     pad: 'sm:pl-8',
@@ -37,7 +37,7 @@ const entries = [
   },
   {
     href: '/books',
-    speed: 0.18,
+    speed: 0.28,
     title: '书架',
     desc: '读过的和正在读的，都立在架子上。',
     pad: 'sm:pl-28',

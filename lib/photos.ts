@@ -28,33 +28,52 @@ function readMeta(): Record<string, Meta> {
 }
 
 /**
- * 把 public/photos 里的图片当作相册内容源：
- * 文件名以 YYYY-MM-DD 开头即视为拍摄日期，说明文字从 data/photos.json 里按文件名取。
- * 尺寸在构建时读出来，避免瀑布流图片加载时跳动。
+ * 按日记里引用的文件名组装相册照片。
+ * 相册不再单独扫描 public/photos 目录，而是把「所有日记 photos 字段里出现的照片」收进来，
+ * 说明文字/地点从 photos.meta.json 按文件名取，尺寸在构建时读出来避免瀑布流跳动。
  */
-export function getPhotos(): Photo[] {
+export function getPhotosByRefs(refs: string[]): Photo[] {
   if (!fs.existsSync(PHOTO_DIR)) return []
   const meta = readMeta()
+  const seen = new Set<string>()
 
-  return fs
-    .readdirSync(PHOTO_DIR)
-    .filter((file) => /\.(jpe?g|png|webp|avif)$/i.test(file))
-    .map((file) => {
-      const slug = file.replace(/\.[^.]+$/, '')
-      const dim = imageSize(fs.readFileSync(path.join(PHOTO_DIR, file)))
-      // 工作台以完整文件名（含扩展名）作 key 存 meta，这里优先按文件名取，slug 兜底
-      const m = meta[file] ?? meta[slug] ?? {}
-      const dateMatch = slug.match(/^(\d{4}-\d{2}-\d{2})/)
-      return {
-        slug,
-        src: `/photos/${file}`,
-        width: dim.width || 1,
-        height: dim.height || 1,
-        date: dateMatch ? dateMatch[1] : '1970-01-01',
-        caption: m.caption,
-        place: m.place,
-        tags: m.tags ?? [],
+  return refs
+    .filter((ref) => typeof ref === 'string' && ref.trim())
+    .map((ref) => ref.trim())
+    .filter((ref) => {
+      if (seen.has(ref)) return false // 多篇日记可能引用同一张照片，去重
+      seen.add(ref)
+      return true
+    })
+    .filter((ref) => /\.(jpe?g|png|webp|avif)$/i.test(ref))
+    .flatMap((ref): Photo[] => {
+      const file = path.join(PHOTO_DIR, ref)
+      if (!fs.existsSync(file)) return []
+      const slug = ref.replace(/\.[^.]+$/, '')
+      let width = 1
+      let height = 1
+      try {
+        const dim = imageSize(fs.readFileSync(file))
+        width = dim.width || 1
+        height = dim.height || 1
+      } catch {
+        // 读不到尺寸就保留 1:1，避免整页崩
       }
+      // meta 以完整文件名作 key，slug 兜底
+      const m = meta[ref] ?? meta[slug] ?? {}
+      const dateMatch = slug.match(/^(\d{4}-\d{2}-\d{2})/)
+      return [
+        {
+          slug,
+          src: `/photos/${ref}`,
+          width,
+          height,
+          date: dateMatch ? dateMatch[1] : '1970-01-01',
+          caption: m.caption,
+          place: m.place,
+          tags: m.tags ?? [],
+        },
+      ]
     })
     .sort((a, b) => b.date.localeCompare(a.date))
 }

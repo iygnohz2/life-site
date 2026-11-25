@@ -64,7 +64,6 @@ type Band = {
 
 export default function Ambient() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const glow = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const canvasEl = canvasRef.current
@@ -94,7 +93,7 @@ export default function Ambient() {
     }
     const veilSize = 512
     // 雾的流动速度系数（微调入口：调大=更快，调小=更慢）
-    const speed = 1.5
+    const speed = 2.8
     let veilPattern: CanvasPattern | null = null
 
     let blobs: Blob[] = []
@@ -150,17 +149,17 @@ export default function Ambient() {
           c: (i % 2) as 0 | 1,
           bx: 0.1 + 0.8 * hash(i + 1),
           by: 0.08 + 0.84 * hash(i + 2),
-          br: (0.24 + 0.36 * hash(i + 3)) * maxDim,
-          alpha: 0.06 + 0.07 * hash(i + 4),
-          ax: (0.04 + 0.13 * hash(i + 5)) * w,
-          ay: (0.05 + 0.15 * hash(i + 6)) * h,
+          br: (0.32 + 0.44 * hash(i + 3)) * maxDim,
+          alpha: 0.1 + 0.1 * hash(i + 4),
+          ax: (0.08 + 0.2 * hash(i + 5)) * w,
+          ay: (0.1 + 0.22 * hash(i + 6)) * h,
           sx: (0.05 + 0.13 * hash(i + 7)) * speed,
           sy: (0.04 + 0.11 * hash(i + 8)) * speed,
           px: hash(i + 9) * Math.PI * 2,
           py: hash(i + 10) * Math.PI * 2,
-          sr: 0.05 + 0.11 * hash(i + 11),
+          sr: 0.1 + 0.16 * hash(i + 11),
           pr: hash(i + 12) * Math.PI * 2,
-          sa: 0.06 + 0.14 * hash(i + 13),
+          sa: 0.1 + 0.22 * hash(i + 13),
           pa: hash(i + 14) * Math.PI * 2,
         })
       }
@@ -172,10 +171,10 @@ export default function Ambient() {
           c: (i % 2) as 0 | 1,
           bx: hash(i + 30),
           by: heights[i] + (hash(i + 31) - 0.5) * 0.05,
-          rx: (0.55 + 0.35 * hash(i + 32)) * w,
-          ry: (0.06 + 0.09 * hash(i + 33)) * h,
-          alpha: 0.04 + 0.04 * hash(i + 34),
-          ax: (0.12 + 0.22 * hash(i + 35)) * w,
+          rx: (0.65 + 0.4 * hash(i + 32)) * w,
+          ry: (0.08 + 0.12 * hash(i + 33)) * h,
+          alpha: 0.06 + 0.06 * hash(i + 34),
+          ax: (0.2 + 0.32 * hash(i + 35)) * w,
           sx: (0.03 + 0.06 * hash(i + 36)) * speed,
           px: hash(i + 37) * Math.PI * 2,
         })
@@ -233,7 +232,7 @@ export default function Ambient() {
       // 1. 雾纱：整体缓慢漂移 + 极慢旋转
       if (veilPattern) {
         c2d.save()
-        c2d.globalAlpha = 0.06 * (1 + fogBoost * 0.6)
+        c2d.globalAlpha = 0.1 * (1 + fogBoost * 0.6)
         const ox = (t * 6 * speed) % veilSize
         const oy = (t * 4 * speed) % veilSize
         c2d.translate(w / 2, h / 2)
@@ -262,8 +261,8 @@ export default function Ambient() {
       for (const b of blobs) {
         const x = b.bx * w + b.ax * Math.sin(t * b.sx + b.px)
         const y = b.by * h + b.ay * Math.sin(t * b.sy + b.py)
-        const r = b.br * (1 + 0.1 * Math.sin(t * b.sr + b.pr))
-        const a = b.alpha * (1 + 0.28 * Math.sin(t * b.sa + b.pa)) * (1 + fogBoost * 0.5)
+        const r = b.br * (1 + 0.22 * Math.sin(t * b.sr + b.pr))
+        const a = b.alpha * (1 + 0.45 * Math.sin(t * b.sa + b.pa)) * (1 + fogBoost * 0.5)
         drawBlob(x, y, r, b.c === 0 ? colors.dream : colors.mist, a)
       }
     }
@@ -308,32 +307,16 @@ export default function Ambient() {
       raf = requestAnimationFrame(loop)
     }
 
-    // --- 鼠标冷光（保留原实现） ---
-    const el = glow.current
-    let tx = window.innerWidth / 2
-    let ty = window.innerHeight * 0.28
-    let cx = tx
-    let cy = ty
-    let glowRaf = 0
-    const onMove = (e: MouseEvent) => {
-      tx = e.clientX
-      ty = e.clientY
+    // 光标唤醒：监听鼠标移动更新时间戳（静止时雾变浓，移动即醒）
+    const onMove = () => {
       lastMoveAt = performance.now()
-    }
-    const glowLoop = () => {
-      cx += (tx - cx) * 0.035
-      cy += (ty - cy) * 0.035
-      if (el) el.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`
-      glowRaf = requestAnimationFrame(glowLoop)
     }
     if (!reduced) {
       window.addEventListener('mousemove', onMove, { passive: true })
-      glowRaf = requestAnimationFrame(glowLoop)
     }
 
     return () => {
       cancelAnimationFrame(raf)
-      cancelAnimationFrame(glowRaf)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMove)
       document.removeEventListener('visibilitychange', onVis)
@@ -354,16 +337,6 @@ export default function Ambient() {
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='1200'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' seed='7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E\")",
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
-        }}
-      />
-
-      {/* 鼠标冷光 */}
-      <div
-        ref={glow}
-        className="absolute -top-1/2 -left-1/2 h-[34rem] w-[34rem] rounded-full blur-[110px]"
-        style={{
-          background:
-            'radial-gradient(circle at center, color-mix(in oklab, var(--color-dream-300) 16%, transparent) 0%, transparent 62%)',
         }}
       />
     </div>

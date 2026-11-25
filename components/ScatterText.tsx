@@ -68,10 +68,10 @@ export default function ScatterText({
           // 收拢目标：竖排一列，逐字向下排开，整体居中
           const sy = ((k - (n - 1) / 2) * lineStep).toFixed(3)
           // 漂浮：每字不同的幅度、周期与相位，缓慢地各自浮动
-          const fx = ((drift01(i + seed * 13) - 0.5) * 1.2).toFixed(3)
-          const fy = ((drift01(i + seed * 17) - 0.5) * 1.4).toFixed(3)
-          const fr = ((drift01(i + seed * 29) - 0.5) * 6).toFixed(2)
-          const fdNum = 6 + drift01(i + seed * 19) * 4
+          const fx = ((drift01(i + seed * 13) - 0.5) * 2.2).toFixed(3)
+          const fy = ((drift01(i + seed * 17) - 0.5) * 2.6).toFixed(3)
+          const fr = ((drift01(i + seed * 29) - 0.5) * 12).toFixed(2)
+          const fdNum = 4 + drift01(i + seed * 19) * 3
           const fdelay = (-drift01(i + seed * 23) * fdNum).toFixed(2)
           const style = {
             '--x': `${x}em`,
@@ -113,15 +113,22 @@ export default function ScatterText({
         const dy = ((b - 0.5) * 0.16 * intensity).toFixed(3)
         const rot = Math.round((a - 0.5) * 18 * intensity)
         const o = (0.72 + b * 0.28).toFixed(2)
+        // 上下漂浮：每个字不同幅度/周期/相位，形成波浪起伏
+        const fyAmp = (-0.16 - drift01(i + seed * 41) * 0.26).toFixed(3)
+        const fyDur = (3.2 + drift01(i + seed * 43) * 2).toFixed(2)
+        const fyDelay = (-drift01(i + seed * 47) * Number(fyDur)).toFixed(2)
         const style = {
           '--dx': `${dx}em`,
           '--dy': `${dy}em`,
           '--rot': `${rot}deg`,
           '--o': o,
+          '--fy-amp': `${fyAmp}em`,
+          '--fy-d': `${fyDur}s`,
+          '--fy-delay': `${fyDelay}s`,
         } as CSSProperties
         return (
           <span key={i} className={`scatter-char ${isEm(i) ? emphasisClass : ''}`} style={style}>
-            {ch}
+            <span className="char-float">{ch}</span>
           </span>
         )
       })}

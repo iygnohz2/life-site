@@ -8,6 +8,8 @@ import LockGate from '@/components/LockGate'
 import DreamNavTitle from '@/components/DreamNavTitle'
 import Interactions from '@/components/Interactions'
 import { components } from '@/components/MDXComponents'
+import PostPhotos from '@/components/PostPhotos'
+import { getPhotosByRefs } from '@/lib/photos'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { allLives } from 'contentlayer/generated'
 import { sortByDateDesc, longDateTime, MOOD_TONE, KIND_LABEL, type LifeEntry } from '@/lib/life'
@@ -63,6 +65,7 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
   const next = sorted[idx - 1]
   const tone = (post.mood && MOOD_TONE[post.mood]) || 'var(--color-ink-3)'
   const locked = post.locked === true
+  const photos = post.photos?.length ? getPhotosByRefs(post.photos) : []
 
   const content = (
     <>
@@ -79,6 +82,8 @@ export default async function LifePost(props: { params: Promise<{ slug: string }
       <div className="prose prose-neutral dark:prose-invert mt-10 max-w-none leading-[2.05]">
         <MDXLayoutRenderer code={(post as LifeDoc).body.code} components={components} />
       </div>
+
+      <PostPhotos photos={photos} />
 
       {post.tags?.length ? (
         <div className="mt-12 flex flex-wrap gap-2">

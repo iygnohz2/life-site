@@ -90,6 +90,7 @@ function listPosts() {
         tags: data.tags ?? [],
         draft: data.draft === true,
         locked: data.locked === true,
+        photos: Array.isArray(data.photos) ? data.photos : [],
       }
     })
     .sort((a, b) => b.date.localeCompare(a.date))
@@ -144,6 +145,7 @@ function savePost(input) {
     ...(input.tags?.length ? { tags: input.tags } : {}),
     ...(input.draft ? { draft: true } : {}),
     ...(input.locked ? { locked: true } : {}),
+    ...(Array.isArray(input.photos) && input.photos.length ? { photos: input.photos } : {}),
   }
 
   const out = matter

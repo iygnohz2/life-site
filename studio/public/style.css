@@ -287,3 +287,27 @@ p.sub { color: var(--ink-2); font-size: 12.5px; line-height: 1.95; margin: 14px 
   transition: all 0.25s;
 }
 .del-photo:hover { background: rgba(217, 138, 122, 0.12); border-color: var(--danger); }
+
+/* 写日记 · 附照片 */
+.post-photos-wrap { margin-top: 18px; }
+.post-photos { display: flex; flex-wrap: wrap; gap: 10px; }
+.post-photos:empty { display: none; }
+.post-photo { position: relative; width: 92px; }
+.post-photo .thumb { aspect-ratio: 1; }
+.post-photo .rm {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(5, 7, 13, 0.72);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.post-photo .rm:hover { background: var(--danger); }
+.drop.small { height: 84px; margin-top: 10px; }

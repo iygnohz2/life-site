@@ -152,6 +152,7 @@ $('dk-save').addEventListener('click', async () => {
 /* ---------- 写日记 ---------- */
 
 let currentSlug = ''
+let currentPhotos = []
 
 async function loadPosts() {
   const posts = await api('/api/posts')
@@ -178,6 +179,8 @@ $('post-picker').addEventListener('change', async (e) => {
     $('f-tags').value = ''
     $('f-summary').value = ''
     $('f-lock').value = ''
+    currentPhotos = []
+    renderPostPhotos()
     renderPreview()
     return
   }
@@ -192,10 +195,12 @@ $('post-picker').addEventListener('change', async (e) => {
   $('f-place').value = fm.place || ''
   $('f-tags').value = (fm.tags || []).join(', ')
   $('f-summary').value = fm.summary || ''
-  $('f-lock').value = fm.locked ? 'locked' : ''
-  $('f-body').value = post.body || ''
-  renderPreview()
-})
+    $('f-lock').value = fm.locked ? 'locked' : ''
+    $('f-body').value = post.body || ''
+    currentPhotos = Array.isArray(fm.photos) ? fm.photos : []
+    renderPostPhotos()
+    renderPreview()
+  })
 
 async function savePost(draft) {
   const hint = $('write-hint')
@@ -221,6 +226,7 @@ async function savePost(draft) {
           .value.split(/[,，\s]+/)
           .map((t) => t.trim())
           .filter(Boolean),
+        photos: currentPhotos,
         body,
       }),
     })
@@ -269,43 +275,64 @@ function markdown(src) {
     .join('')
 }
 
-/* ---------- 照片 ---------- */
+/* ---------- 写日记 · 附照片 ---------- */
 
-const drop = $('drop')
-const fileInput = $('file')
+function renderPostPhotos() {
+  const el = $('post-photos')
+  el.innerHTML = currentPhotos
+    .map(
+      (name) => `
+      <div class="post-photo" data-name="${esc(name)}">
+        <div class="thumb" style="background-image:url('/photos/${encodeURIComponent(name)}')"></div>
+        <button class="rm" title="移除这张照片">×</button>
+      </div>`
+    )
+    .join('')
+  el.querySelectorAll('.rm').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const name = btn.closest('.post-photo').dataset.name
+      currentPhotos = currentPhotos.filter((n) => n !== name)
+      renderPostPhotos()
+    })
+  })
+}
 
-drop.addEventListener('click', () => fileInput.click())
-drop.addEventListener('dragover', (e) => {
+const postDrop = $('post-drop')
+const postFile = $('post-file')
+
+postDrop.addEventListener('click', () => postFile.click())
+postDrop.addEventListener('dragover', (e) => {
   e.preventDefault()
-  drop.classList.add('over')
+  postDrop.classList.add('over')
 })
-drop.addEventListener('dragleave', () => drop.classList.remove('over'))
-drop.addEventListener('drop', (e) => {
+postDrop.addEventListener('dragleave', () => postDrop.classList.remove('over'))
+postDrop.addEventListener('drop', (e) => {
   e.preventDefault()
-  drop.classList.remove('over')
-  uploadFiles(e.dataTransfer.files)
+  postDrop.classList.remove('over')
+  uploadPostPhotos(e.dataTransfer.files)
 })
-fileInput.addEventListener('change', () => uploadFiles(fileInput.files))
+postFile.addEventListener('change', () => uploadPostPhotos(postFile.files))
 
-async function uploadFiles(files) {
+async function uploadPostPhotos(files) {
   if (!files || !files.length) return
-  $('drop-text').textContent = '压缩上传中…'
-  const lines = []
+  const text = $('post-drop-text')
+  text.textContent = '压缩上传中…'
   for (const file of Array.from(files)) {
     const form = new FormData()
     form.append('file', file)
     try {
       const r = await api('/api/photos', { method: 'POST', body: form })
-      const saved = ((1 - r.bytes / file.size) * 100).toFixed(0)
-      lines.push(`${r.name} · ${r.width}×${r.height} · ${(r.bytes / 1024).toFixed(0)}KB（省 ${saved}%）`)
+      currentPhotos.push(r.name)
     } catch (e) {
-      lines.push(`${file.name} 失败：${e.message}`)
+      alert(`上传失败：${file.name} — ${e.message}`)
     }
   }
-  $('drop-text').textContent = '把照片拖到这里，或点击选择'
-  $('upload-log').innerHTML = lines.map((l) => `<div class="row"><span class="title">${esc(l)}</span></div>`).join('')
-  loadPhotos()
+  text.textContent = '把照片拖到这里，或点击添加'
+  postFile.value = ''
+  renderPostPhotos()
 }
+
+/* ---------- 照片 ---------- */
 
 async function loadPhotos() {
   const items = await api('/api/photos')

@@ -57,7 +57,10 @@ export default function MusicPlayer({ tracks }: { tracks: Track[] }) {
   const playingRef = useRef(false)
 
   const [open, setOpen] = useState(false)
-  const [index, setIndex] = useState(0)
+  // 进站随机一首，避免每次都从第一首开始
+  const [index, setIndex] = useState(() =>
+    tracks.length ? Math.floor(Math.random() * tracks.length) : 0
+  )
   const [playing, setPlaying] = useState(false)
   const [current, setCurrent] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -114,6 +117,31 @@ export default function MusicPlayer({ tracks }: { tracks: Track[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index])
 
+  // 进站自动随机播放；若被浏览器自动播放策略拦截，则在首次交互时补上
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    let done = false
+    const tryPlay = () => {
+      audio
+        .play()
+        .then(() => {
+          done = true
+        })
+        .catch(() => {})
+    }
+    const unlock = () => {
+      if (!done) tryPlay()
+    }
+    tryPlay()
+    window.addEventListener('pointerdown', unlock)
+    window.addEventListener('keydown', unlock)
+    return () => {
+      window.removeEventListener('pointerdown', unlock)
+      window.removeEventListener('keydown', unlock)
+    }
+  }, [])
+
   if (!count) return null
 
   const toggle = () => {
@@ -156,7 +184,7 @@ export default function MusicPlayer({ tracks }: { tracks: Track[] }) {
 
   return (
     <>
-      <audio ref={audioRef} preload="none">
+      <audio ref={audioRef} preload="auto">
         <track kind="captions" />
       </audio>
 
@@ -173,13 +201,13 @@ export default function MusicPlayer({ tracks }: { tracks: Track[] }) {
             className="moon-pulse pointer-events-none absolute -inset-7 blur-2xl"
             style={{
               background:
-                'radial-gradient(55% 50% at 42% 38%, color-mix(in oklab, var(--color-dream-400) 52%, transparent) 0%, color-mix(in oklab, var(--color-mist-500) 30%, transparent) 46%, transparent 70%)',
+                'radial-gradient(55% 50% at 42% 38%, color-mix(in oklab, var(--color-dream-400) 52%, transparent) 0%, color-mix(in oklab, var(--color-dream-500) 30%, transparent) 46%, transparent 70%)',
             }}
           />
           <span
             className={`border-line bg-surface/70 relative flex h-12 w-12 items-center justify-center border backdrop-blur transition-all duration-300 sm:h-auto sm:w-auto sm:flex-col sm:gap-4 sm:px-[10px] sm:py-7 ${
               playing
-                ? 'border-dream-500/45 text-dream-400 bg-surface/85'
+                ? 'border-dream-400/50 text-dream-300 bg-surface/85'
                 : 'text-ink-2 hover:border-dream-500/35 hover:text-ink hover:bg-surface/90'
             }`}
             style={{ borderRadius: '58% 42% 50% 48% / 55% 45% 58% 42%' }}

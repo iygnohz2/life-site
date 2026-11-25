@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import type { Photo } from '@/lib/photos'
-import Interactions from '@/components/Interactions'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -280,13 +279,6 @@ export default function PhotoWall({ photos }: { photos: Photo[] }) {
                 {current.date}
                 {current.place ? ` · ${current.place}` : ''}
               </p>
-              <div className="text-left">
-                <Interactions
-                  targetType="photo"
-                  targetId={current.slug}
-                  className="hairline mt-6 pt-6"
-                />
-              </div>
             </div>
           </div>
         </div>
